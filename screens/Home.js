@@ -72,7 +72,11 @@ const styles = StyleSheet.create({
 
 const menuAtas = [
   { icon: "cube", color: Colors.orange500, text: "Barang" },
-  { icon: "purse", color: Colors.red500, text: "Pengeluaran" },
+  {
+    icon: "chevron-left-circle-outline",
+    color: Colors.red500,
+    text: "Pengeluaran",
+  },
   { icon: "cash-multiple", color: Colors.green500, text: "Penjualan" },
 ];
 

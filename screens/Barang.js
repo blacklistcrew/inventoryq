@@ -1,46 +1,38 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Button, TouchableRipple } from "react-native-paper";
+import { View } from "react-native";
 import globalStyles from "../styles/globalStyles";
 import TextCard from "../components/TextCard";
 import arrBarang from "../data/arrBarang";
+import SortBy from "../components/SortBy";
 
 export default function Barang() {
   return (
     <View>
+      {/* urutkan berdasarkan */}
       <View style={globalStyles.whiteContainer}>
-        <TouchableRipple
-          onPress={() => console.log("Urutkan")}
-          rippleColor="rgba(0, 0, 0, .32)"
-        >
-          <View style={styles.flexRow}>
-            <Text style={{ color: "grey", marginLeft: 20 }}>
-              Urutkan berdasarkan
-            </Text>
-            <Button icon="chevron-down" color="grey" />
-          </View>
-        </TouchableRipple>
+        <View style={globalStyles.flexRow}>
+          {/* waktu */}
+          <SortBy title="Waktu" />
+          {/* waktu, totbayar, jumlahbeli, namabrg */}
+          <SortBy title="Urutkan" />
+        </View>
       </View>
 
+      {/* daftar barang */}
       <View style={globalStyles.whiteContainer}>
-        {arrBarang.map((barang, i) => (
-          <TextCard
-            title={barang.nama}
-            desc={`Stok: ${barang.stok}`}
-            icon="cube"
-            right={`Rp ${barang.harga},-`}
-            key={i.toString()}
-          />
-        ))}
+        <FlatList
+          data={arrBarang}
+          renderItem={({ item }) => (
+            <TextCard
+              title={item.nama}
+              desc={`Stok: ${item.stok}`}
+              icon="cube"
+              right={`Rp ${item.harga},-`}
+            />
+          )}
+          keyExtractor={(item, i) => i.toString()}
+        />
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  flexRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-});
