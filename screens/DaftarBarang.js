@@ -7,7 +7,7 @@ import SortBy from "../components/SortBy";
 
 export default function Barang() {
   return (
-    <View>
+    <>
       {/* urutkan berdasarkan */}
       <View style={globalStyles.whiteContainer}>
         <View style={globalStyles.flexRow}>
@@ -33,6 +33,6 @@ export default function Barang() {
           keyExtractor={(item, i) => i.toString()}
         />
       </View>
-    </View>
+    </>
   );
 }

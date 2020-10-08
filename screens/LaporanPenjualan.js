@@ -6,7 +6,7 @@ import TextCard from "../components/TextCard";
 
 export default function LaporanPenjualan() {
   return (
-    <View>
+    <>
       {/* urutkan berdasarkan */}
       <View style={globalStyles.whiteContainer}>
         <View style={globalStyles.flexRow}>
@@ -63,7 +63,7 @@ export default function LaporanPenjualan() {
           keyExtractor={(item, i) => i.toString()}
         />
       </View>
-    </View>
+    </>
   );
 }
 

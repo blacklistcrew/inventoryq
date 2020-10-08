@@ -1,42 +1,67 @@
 import React from "react";
-import { View } from "react-native";
+import { View, FlatList } from "react-native";
+import { Button } from "react-native-paper";
 import globalStyles from "../styles/globalStyles";
 import TextCard from "../components/TextCard";
 import InputKotak from "../components/InputKotak";
 import Fab from "../components/Fab";
+import ModalCetak from "../components/ModalCetak";
 
 export default function Penjualan() {
   const [penjualans, setPenjualans] = React.useState([
-    { namaBrg: "Beras Rojo Lele", stok: 20, harga: 20000, jumlahBrg: 2 },
+    { namaBrg: "Beras Rojo Lele", stok: 20, harga: 20000, jumlahBrg: "" },
   ]);
 
   // jika barang yg ad di modal diklik, maka barang akan msk ke daftar beli
-  const tambahBeli = (namaBrg, stok, harga) => {
+  const tambahArr = (namaBrg, stok, harga) => {
     setPenjualans((prevPenjualan) =>
       prevPenjualan.concat({
         namaBrg,
         stok,
         harga,
-        jumlahBrg: 3,
+        jumlahBrg: "",
       })
     );
   };
 
+  // update jumlahBrg
+  const updateJumlah = (text, item) => {
+    // ubah properti jumlahBrg
+    const penjualanBaru = penjualans.map((penjualan) =>
+      penjualan.namaBrg == item.namaBrg
+        ? { ...penjualan, jumlahBrg: text }
+        : penjualan
+    );
+
+    // ubah state penjualans
+    setPenjualans(penjualanBaru);
+  };
+
   return (
     <>
+      {/* daftar brg yg mau dicetak */}
       <View style={globalStyles.whiteContainer}>
-        {penjualans.map((penjualan, i) => (
-          <TextCard
-            title={penjualan.namaBrg}
-            desc={`Stok: ${penjualan.stok}, Rp ${penjualan.harga},-`}
-            icon="cash-multiple"
-            rightComponent={<InputKotak />}
-            key={i.toString()}
-          />
-        ))}
+        <FlatList
+          data={penjualans}
+          renderItem={({ item }) => (
+            <TextCard
+              title={item.namaBrg}
+              desc={`Stok: ${item.stok}`}
+              icon="cash-multiple"
+              rightComponent={
+                <InputKotak onChangeText={(text) => updateJumlah(text, item)} />
+              }
+            />
+          )}
+          keyExtractor={(item, i) => i.toString()}
+        />
       </View>
 
-      <Fab tambahBeli={tambahBeli} />
+      {/* tombol simpan & modal cetak */}
+      <ModalCetak penjualans={penjualans} />
+
+      {/* tombol apung & modal pencarian brg */}
+      <Fab tambahArr={tambahArr} />
     </>
   );
 }

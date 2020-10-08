@@ -14,7 +14,7 @@ export default function TambahBarang() {
   console.log(submit);
 
   return (
-    <View>
+    <>
       <View style={globalStyles.whiteContainer}>
         <TextInput
           label="Nama barang"
@@ -49,6 +49,6 @@ export default function TambahBarang() {
           Simpan
         </Button>
       </View>
-    </View>
+    </>
   );
 }

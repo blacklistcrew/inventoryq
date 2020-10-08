@@ -8,7 +8,7 @@ const globalStyles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
   },
 });

@@ -1,17 +1,14 @@
 import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 
-export default function InputKotak() {
-  const [jumlah, setJumlah] = React.useState("");
-
+export default function InputKotak({ onChangeText }) {
   return (
     <TextInput
       style={styles.textInput}
       placeholder="Jumlah"
       keyboardType="numeric"
       autoFocus
-      value={jumlah}
-      onChangeText={(text) => setJumlah(text)}
+      onChangeText={onChangeText}
     />
   );
 }

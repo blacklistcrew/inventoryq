@@ -5,7 +5,7 @@ import globalStyles from "../styles/globalStyles";
 import arrBarang from "../data/arrBarang";
 import TextCard from "../components/TextCard";
 
-export default function Fab({ tambahBeli }) {
+export default function Fab({ tambahArr }) {
   const [listBarang, setListBarang] = React.useState(arrBarang);
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
@@ -36,7 +36,7 @@ export default function Fab({ tambahBeli }) {
                 icon="cube"
                 right={`Rp ${item.harga},-`}
                 onPress={() => {
-                  tambahBeli(item.nama, item.stok, item.harga);
+                  tambahArr(item.nama, item.stok, item.harga);
                   hideModal();
                 }}
               />

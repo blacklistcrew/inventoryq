@@ -1,12 +1,12 @@
 import React from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, FlatList } from "react-native";
 import globalStyles from "../styles/globalStyles";
 import TextCard from "../components/TextCard";
 import SortBy from "../components/SortBy";
 
 export default function LaporanPengeluaran() {
   return (
-    <View>
+    <>
       {/* urutkan berdasarkan */}
       <View style={globalStyles.whiteContainer}>
         <View style={globalStyles.flexRow}>
@@ -42,7 +42,7 @@ export default function LaporanPengeluaran() {
           keyExtractor={(item, i) => i.toString()}
         />
       </View>
-    </View>
+    </>
   );
 }
 
