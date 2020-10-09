@@ -1,13 +1,12 @@
 import React from "react";
 import { View, FlatList } from "react-native";
-import { Button } from "react-native-paper";
 import globalStyles from "../styles/globalStyles";
 import TextCard from "../components/TextCard";
 import InputKotak from "../components/InputKotak";
 import Fab from "../components/Fab";
 import ModalCetak from "../components/ModalCetak";
 
-export default function Penjualan() {
+const Penjualan = () => {
   const [penjualans, setPenjualans] = React.useState([
     { namaBrg: "Beras Rojo Lele", stok: 20, harga: 20000, jumlahBrg: "" },
   ]);
@@ -64,4 +63,6 @@ export default function Penjualan() {
       <Fab tambahArr={tambahArr} />
     </>
   );
-}
+};
+
+export default Penjualan;

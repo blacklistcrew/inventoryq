@@ -1,24 +1,19 @@
+import "react-native-gesture-handler";
 import React from "react";
-import { StyleSheet, View, AppRegistry } from "react-native";
+import { AppRegistry } from "react-native";
 import { Provider as PaperProvider } from "react-native-paper";
 import { name as appName } from "./app.json";
-import Penjualan from "./screens/Penjualan";
+import { NavigationContainer } from "@react-navigation/native";
 
-export default function App() {
-  return (
-    <PaperProvider>
-      <View style={styles.container}>
-        <Penjualan />
-      </View>
-    </PaperProvider>
-  );
-}
+import Drawerku from "./routes/Drawerku";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ededed",
-  },
-});
+const App = () => (
+  <PaperProvider>
+    <NavigationContainer>
+      <Drawerku />
+    </NavigationContainer>
+  </PaperProvider>
+);
 
-AppRegistry.registerComponent(appName, () => Main);
+export default App;
+AppRegistry.registerComponent(appName, () => App);

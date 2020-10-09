@@ -4,60 +4,58 @@ import { IconButton, Colors } from "react-native-paper";
 import globalStyles from "../styles/globalStyles";
 import TextCard from "../components/TextCard";
 
-export default function Home() {
-  return (
-    <ScrollView>
-      {/* menu di hal home */}
-      <View style={globalStyles.whiteContainer}>
-        <View style={styles.menuContainer}>
-          {menuAtas.map((menu, i) => (
-            <View style={styles.menuItemContainer} key={i.toString()}>
-              <IconButton
-                icon={menu.icon}
-                color={menu.color}
-                size={40}
-                onPress={() => console.log(menu.text)}
-              />
-              <Text style={{ color: menu.color }}>{menu.text}</Text>
-            </View>
-          ))}
-        </View>
-
-        <View style={styles.menuContainer}>
-          {menuBawah.map((menu, i) => (
-            <View style={styles.menuItemContainer} key={i.toString()}>
-              <IconButton
-                icon={menu.icon}
-                color={menu.color}
-                size={40}
-                onPress={() => console.log(menu.text)}
-              />
-              <Text style={{ color: menu.color }}>{menu.text}</Text>
-              <Text style={{ color: menu.color }}>{menu.text2}</Text>
-            </View>
-          ))}
-        </View>
+const Home = () => (
+  <ScrollView>
+    {/* menu di hal home */}
+    <View style={globalStyles.whiteContainer}>
+      <View style={styles.menuContainer}>
+        {menuAtas.map((menu, i) => (
+          <View style={styles.menuItemContainer} key={i.toString()}>
+            <IconButton
+              icon={menu.icon}
+              color={menu.color}
+              size={40}
+              onPress={() => console.log(menu.text)}
+            />
+            <Text style={{ color: menu.color }}>{menu.text}</Text>
+          </View>
+        ))}
       </View>
 
-      {/* penjualan di hal home */}
-      <View style={globalStyles.whiteContainer}>
-        <TextCard
-          title="Penjualan"
-          desc="Hari Ini"
-          icon="cash-multiple"
-          right="Rp 100.000,-"
-        />
-
-        <TextCard
-          title="Penjualan"
-          desc="Oktober 2020"
-          icon="cash-multiple"
-          right="Rp 1000.000,-"
-        />
+      <View style={styles.menuContainer}>
+        {menuBawah.map((menu, i) => (
+          <View style={styles.menuItemContainer} key={i.toString()}>
+            <IconButton
+              icon={menu.icon}
+              color={menu.color}
+              size={40}
+              onPress={() => console.log(menu.text)}
+            />
+            <Text style={{ color: menu.color }}>{menu.text}</Text>
+            <Text style={{ color: menu.color }}>{menu.text2}</Text>
+          </View>
+        ))}
       </View>
-    </ScrollView>
-  );
-}
+    </View>
+
+    {/* penjualan di hal home */}
+    <View style={globalStyles.whiteContainer}>
+      <TextCard
+        title="Penjualan"
+        desc="Hari Ini"
+        icon="cash-multiple"
+        right="Rp 100.000,-"
+      />
+
+      <TextCard
+        title="Penjualan"
+        desc="Oktober 2020"
+        icon="cash-multiple"
+        right="Rp 1000.000,-"
+      />
+    </View>
+  </ScrollView>
+);
 
 const styles = StyleSheet.create({
   menuContainer: {
@@ -95,3 +93,5 @@ const menuBawah = [
     text2: "Penjualan",
   },
 ];
+
+export default Home;

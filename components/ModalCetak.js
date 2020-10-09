@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Modal, FlatList, Text } from "react-native";
-import { Button, Colors } from "react-native-paper";
+import { Button } from "react-native-paper";
 import globalStyles from "../styles/globalStyles";
 import TextCard from "./TextCard";
 

@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import globalStyles from "../styles/globalStyles";
 
-export default function TambahBarang() {
+const TambahBarang = () => {
   const [submit, setSubmit] = React.useState({
     nama: "",
     stok: "",
@@ -51,4 +51,6 @@ export default function TambahBarang() {
       </View>
     </>
   );
-}
+};
+
+export default TambahBarang;
