@@ -4,7 +4,7 @@ import { Button } from "react-native-paper";
 import globalStyles from "../styles/globalStyles";
 import TextCard from "./TextCard";
 
-export default function ModalCetak({ penjualans }) {
+const ModalCetak = ({ penjualans }) => {
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -53,4 +53,6 @@ export default function ModalCetak({ penjualans }) {
       </Modal>
     </>
   );
-}
+};
+
+export default ModalCetak;

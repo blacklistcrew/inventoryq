@@ -5,7 +5,7 @@ import globalStyles from "../styles/globalStyles";
 import arrBarang from "../data/arrBarang";
 import TextCard from "../components/TextCard";
 
-export default function Fab({ tambahArr }) {
+const Fab = ({ tambahArr }) => {
   const [listBarang, setListBarang] = React.useState(arrBarang);
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
@@ -50,7 +50,7 @@ export default function Fab({ tambahArr }) {
       <FAB style={styles.fab} icon="plus" onPress={showModal} />
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   fab: {
@@ -61,3 +61,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#6200ee",
   },
 });
+
+export default Fab;

@@ -1,17 +1,15 @@
 import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 
-export default function InputKotak({ onChangeText }) {
-  return (
-    <TextInput
-      style={styles.textInput}
-      placeholder="Jumlah"
-      keyboardType="numeric"
-      autoFocus
-      onChangeText={onChangeText}
-    />
-  );
-}
+const InputKotak = ({ onChangeText }) => (
+  <TextInput
+    style={styles.textInput}
+    placeholder="Jumlah"
+    keyboardType="numeric"
+    autoFocus
+    onChangeText={onChangeText}
+  />
+);
 
 const styles = StyleSheet.create({
   textInput: {
@@ -23,3 +21,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
 });
+
+export default InputKotak;

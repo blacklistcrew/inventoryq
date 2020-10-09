@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { Button, Menu, Divider } from "react-native-paper";
 
-export default function SortBy({ title }) {
+const SortBy = ({ title }) => {
   const [visible, setVisible] = React.useState(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
@@ -29,4 +29,6 @@ export default function SortBy({ title }) {
       </Menu>
     </View>
   );
-}
+};
+
+export default SortBy;
