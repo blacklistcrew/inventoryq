@@ -12,9 +12,7 @@ const Penjualan = () => {
   const { control, handleSubmit, errors } = useForm();
 
   // data penjualan yg ditambahkan lewat modal
-  const [penjualans, setPenjualans] = React.useState([
-    { namaBrg: "Beras Rojo Lele", stok: 20, harga: 20000, jumlahBrg: "" },
-  ]);
+  const [penjualans, setPenjualans] = React.useState([]);
 
   // jika barang yg ad di modal diklik, maka barang akan msk ke daftar beli
   const tambahArr = (namaBrg, stok, harga) => {
@@ -45,7 +43,7 @@ const Penjualan = () => {
     <>
       <ScrollView>
         {/* daftar brg yg mau dicetak */}
-        {penjualans ? (
+        {penjualans &&
           penjualans.map((penjualan) => (
             <View style={globalStyles.whiteContainer} key={penjualan.namaBrg}>
               {/* component dr react-hook-form */}
@@ -83,13 +81,16 @@ const Penjualan = () => {
                 </Text>
               )}
             </View>
-          ))
-        ) : (
-          <Text style={{ marginTop: 20 }}>Belum ada barang yang dipilih.</Text>
-        )}
+          ))}
 
         {/* tombol simpan & modal cetak */}
-        <ModalCetak penjualans={penjualans} handleSubmit={handleSubmit} />
+        {penjualans.length == 0 ? (
+          <Text style={{ color: "grey", textAlign: "center", marginTop: 30 }}>
+            Belum ada barang yang dipilih.
+          </Text>
+        ) : (
+          <ModalCetak penjualans={penjualans} handleSubmit={handleSubmit} />
+        )}
       </ScrollView>
 
       {/* tombol apung & modal pencarian brg */}

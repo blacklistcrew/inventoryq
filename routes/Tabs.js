@@ -1,5 +1,4 @@
 import React from "react";
-import { IconButton } from "react-native-paper";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   HomeStack,
@@ -7,6 +6,7 @@ import {
   PengeluaranStack,
   PenjualanStack,
 } from "./Stacks";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +27,7 @@ const Tabs = () => {
                 : "chevron-left-circle-outline";
               break;
             case "Penjualan":
-              iconName = focused ? "cash" : "cash-multiple";
+              iconName = focused ? "cash-multiple" : "cash";
               break;
 
             default:
@@ -36,7 +36,9 @@ const Tabs = () => {
           }
 
           // You can return any component that you like here!
-          return <IconButton name={iconName} size={size} color={color} />;
+          return (
+            <MaterialCommunityIcons name={iconName} size={size} color={color} />
+          );
         },
       })}
       tabBarOptions={{
