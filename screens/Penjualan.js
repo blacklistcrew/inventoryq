@@ -1,12 +1,17 @@
 import React from "react";
-import { View, FlatList } from "react-native";
+import { View, ScrollView, Text } from "react-native";
 import globalStyles from "../styles/globalStyles";
 import TextCard from "../components/TextCard";
 import InputKotak from "../components/InputKotak";
 import Fab from "../components/Fab";
 import ModalCetak from "../components/ModalCetak";
+import { useForm, Controller } from "react-hook-form";
 
 const Penjualan = () => {
+  // react-hook-form
+  const { control, handleSubmit, errors } = useForm();
+
+  // data penjualan yg ditambahkan lewat modal
   const [penjualans, setPenjualans] = React.useState([
     { namaBrg: "Beras Rojo Lele", stok: 20, harga: 20000, jumlahBrg: "" },
   ]);
@@ -38,26 +43,50 @@ const Penjualan = () => {
 
   return (
     <>
-      {/* daftar brg yg mau dicetak */}
-      <View style={globalStyles.whiteContainer}>
-        <FlatList
-          data={penjualans}
-          renderItem={({ item }) => (
-            <TextCard
-              title={item.namaBrg}
-              desc={`Stok: ${item.stok}`}
-              icon="cash-multiple"
-              rightComponent={
-                <InputKotak onChangeText={(text) => updateJumlah(text, item)} />
-              }
+      <ScrollView>
+        {/* daftar brg yg mau dicetak */}
+        {penjualans.map((penjualan) => (
+          <View style={globalStyles.whiteContainer} key={penjualan.namaBrg}>
+            {/* component dr react-hook-form */}
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                // component buatan sendiri berisi card & textinput
+                <TextCard
+                  title={penjualan.namaBrg}
+                  desc={`Stok: ${penjualan.stok}`}
+                  icon="cash-multiple"
+                  rightComponent={
+                    // component buatan sendiri berisi textinput
+                    <InputKotak
+                      value={value}
+                      onBlur={onBlur}
+                      onChangeText={(text) => {
+                        updateJumlah(text, penjualan);
+                        onChange(text);
+                      }}
+                    />
+                  }
+                />
+              )}
+              name={penjualan.namaBrg}
+              rules={{ required: true, pattern: /^[1-9]\d*$/g }}
+              defaultValue=""
+              key={penjualan.namaBrg}
             />
-          )}
-          keyExtractor={(item, i) => i.toString()}
-        />
-      </View>
 
-      {/* tombol simpan & modal cetak */}
-      <ModalCetak penjualans={penjualans} />
+            {/* error */}
+            {errors[penjualan.namaBrg] && (
+              <Text style={{ color: "red", marginLeft: 20 }}>
+                Jumlah barang harus diisi dengan benar.
+              </Text>
+            )}
+          </View>
+        ))}
+
+        {/* tombol simpan & modal cetak */}
+        <ModalCetak penjualans={penjualans} handleSubmit={handleSubmit} />
+      </ScrollView>
 
       {/* tombol apung & modal pencarian brg */}
       <Fab tambahArr={tambahArr} />

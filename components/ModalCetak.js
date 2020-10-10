@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Modal, FlatList, Text } from "react-native";
+import { View, FlatList, Text, Modal } from "react-native";
 import { Button } from "react-native-paper";
 import globalStyles from "../styles/globalStyles";
 import TextCard from "./TextCard";
 
-const ModalCetak = ({ penjualans }) => {
+const ModalCetak = ({ penjualans, handleSubmit }) => {
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -12,7 +12,7 @@ const ModalCetak = ({ penjualans }) => {
   return (
     <>
       <View style={{ ...globalStyles.whiteContainer, paddingHorizontal: 20 }}>
-        <Button mode="contained" onPress={showModal}>
+        <Button mode="contained" onPress={handleSubmit(showModal)}>
           Simpan
         </Button>
       </View>

@@ -1,13 +1,15 @@
 import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 
-const InputKotak = ({ onChangeText }) => (
+const InputKotak = ({ onChangeText, onBlur, value }) => (
   <TextInput
     style={styles.textInput}
     placeholder="Jumlah"
     keyboardType="numeric"
     autoFocus
     onChangeText={onChangeText}
+    onBlur={onBlur}
+    value={value}
   />
 );
 

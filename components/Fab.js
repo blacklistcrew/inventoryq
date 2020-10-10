@@ -44,6 +44,9 @@ const Fab = ({ tambahArr }) => {
             keyExtractor={(item, i) => i.toString()}
           />
         </View>
+
+        {/* tombol modal */}
+        <FAB style={styles.fab} icon="close" onPress={hideModal} />
       </Modal>
 
       {/* tombol modal */}
