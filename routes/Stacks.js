@@ -1,4 +1,5 @@
 import React from "react";
+import { IconButton } from "react-native-paper";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Home from "../screens/Home";
@@ -11,52 +12,93 @@ import LaporanPenjualan from "../screens/LaporanPenjualan";
 
 const Stack = createStackNavigator();
 
-export const HomeStack = () => (
-  <Stack.Navigator headerMode="screen" screenOptions={screenOptions}>
+const HomeStack = () => (
+  <Stack.Navigator
+    headerMode="screen"
+    screenOptions={({ navigation }) => screenOptions(navigation)}
+  >
     <Stack.Screen name="Home" component={Home} />
   </Stack.Navigator>
 );
 
-export const DaftarBarangStack = () => (
-  <Stack.Navigator headerMode="screen" screenOptions={screenOptions}>
+const DaftarBarangStack = () => (
+  <Stack.Navigator
+    headerMode="screen"
+    screenOptions={({ navigation }) => screenOptions(navigation)}
+  >
     <Stack.Screen name="DaftarBarang" component={DaftarBarang} />
   </Stack.Navigator>
 );
 
-export const PengeluaranStack = () => (
-  <Stack.Navigator headerMode="screen" screenOptions={screenOptions}>
+const PengeluaranStack = () => (
+  <Stack.Navigator
+    headerMode="screen"
+    screenOptions={({ navigation }) => screenOptions(navigation)}
+  >
     <Stack.Screen name="Pengeluaran" component={Pengeluaran} />
   </Stack.Navigator>
 );
 
-export const PenjualanStack = () => (
-  <Stack.Navigator headerMode="screen" screenOptions={screenOptions}>
+const PenjualanStack = () => (
+  <Stack.Navigator
+    headerMode="screen"
+    screenOptions={({ navigation }) => screenOptions(navigation)}
+  >
     <Stack.Screen name="Penjualan" component={Penjualan} />
   </Stack.Navigator>
 );
 
-export const TambahBarangStack = () => (
-  <Stack.Navigator headerMode="screen" screenOptions={screenOptions}>
+const TambahBarangStack = () => (
+  <Stack.Navigator
+    headerMode="screen"
+    screenOptions={({ navigation }) => screenOptions(navigation)}
+  >
     <Stack.Screen name="TambahBarang" component={TambahBarang} />
   </Stack.Navigator>
 );
 
-export const LaporanPengeluaranStack = () => (
-  <Stack.Navigator headerMode="screen" screenOptions={screenOptions}>
+const LaporanPengeluaranStack = () => (
+  <Stack.Navigator
+    headerMode="screen"
+    screenOptions={({ navigation }) => screenOptions(navigation)}
+  >
     <Stack.Screen name="LaporanPengeluaran" component={LaporanPengeluaran} />
   </Stack.Navigator>
 );
 
-export const LaporanPenjualanStack = () => (
-  <Stack.Navigator headerMode="screen" screenOptions={screenOptions}>
+const LaporanPenjualanStack = () => (
+  <Stack.Navigator
+    headerMode="screen"
+    screenOptions={({ navigation }) => screenOptions(navigation)}
+  >
     <Stack.Screen name="LaporanPenjualan" component={LaporanPenjualan} />
   </Stack.Navigator>
 );
 
 // style
-const screenOptions = {
-  headerStyle: {
-    backgroundColor: "#6200ee",
-  },
-  headerTintColor: "#fff",
+const screenOptions = (navigation) => {
+  return {
+    headerStyle: {
+      backgroundColor: "#6200ee",
+    },
+    headerTintColor: "#fff",
+    headerLeft: () => (
+      <IconButton
+        onPress={() => navigation.openDrawer()}
+        icon="menu"
+        color="#fff"
+        size={30}
+      />
+    ),
+  };
+};
+
+export {
+  HomeStack,
+  DaftarBarangStack,
+  PengeluaranStack,
+  PenjualanStack,
+  TambahBarangStack,
+  LaporanPengeluaranStack,
+  LaporanPenjualanStack,
 };

@@ -45,44 +45,48 @@ const Penjualan = () => {
     <>
       <ScrollView>
         {/* daftar brg yg mau dicetak */}
-        {penjualans.map((penjualan) => (
-          <View style={globalStyles.whiteContainer} key={penjualan.namaBrg}>
-            {/* component dr react-hook-form */}
-            <Controller
-              control={control}
-              render={({ onChange, onBlur, value }) => (
-                // component buatan sendiri berisi card & textinput
-                <TextCard
-                  title={penjualan.namaBrg}
-                  desc={`Stok: ${penjualan.stok}`}
-                  icon="cash-multiple"
-                  rightComponent={
-                    // component buatan sendiri berisi textinput
-                    <InputKotak
-                      value={value}
-                      onBlur={onBlur}
-                      onChangeText={(text) => {
-                        updateJumlah(text, penjualan);
-                        onChange(text);
-                      }}
-                    />
-                  }
-                />
-              )}
-              name={penjualan.namaBrg}
-              rules={{ required: true, pattern: /^[1-9]\d*$/g }}
-              defaultValue=""
-              key={penjualan.namaBrg}
-            />
+        {penjualans ? (
+          penjualans.map((penjualan) => (
+            <View style={globalStyles.whiteContainer} key={penjualan.namaBrg}>
+              {/* component dr react-hook-form */}
+              <Controller
+                control={control}
+                render={({ onChange, onBlur, value }) => (
+                  // component buatan sendiri berisi card & textinput
+                  <TextCard
+                    title={penjualan.namaBrg}
+                    desc={`Stok: ${penjualan.stok}`}
+                    icon="cash-multiple"
+                    rightComponent={
+                      // component buatan sendiri berisi textinput
+                      <InputKotak
+                        value={value}
+                        onBlur={onBlur}
+                        onChangeText={(text) => {
+                          updateJumlah(text, penjualan);
+                          onChange(text);
+                        }}
+                      />
+                    }
+                  />
+                )}
+                name={penjualan.namaBrg}
+                rules={{ required: true, pattern: /^[1-9]\d*$/g }}
+                defaultValue=""
+                key={penjualan.namaBrg}
+              />
 
-            {/* error */}
-            {errors[penjualan.namaBrg] && (
-              <Text style={{ color: "red", marginLeft: 20 }}>
-                Jumlah barang harus diisi dengan benar.
-              </Text>
-            )}
-          </View>
-        ))}
+              {/* error */}
+              {errors[penjualan.namaBrg] && (
+                <Text style={{ color: "red", marginLeft: 20 }}>
+                  Jumlah barang harus diisi dengan benar.
+                </Text>
+              )}
+            </View>
+          ))
+        ) : (
+          <Text style={{ marginTop: 20 }}>Belum ada barang yang dipilih.</Text>
+        )}
 
         {/* tombol simpan & modal cetak */}
         <ModalCetak penjualans={penjualans} handleSubmit={handleSubmit} />
