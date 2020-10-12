@@ -4,10 +4,15 @@ import { Button } from "react-native-paper";
 import globalStyles from "../styles/globalStyles";
 import TextCard from "./TextCard";
 
-const ModalCetak = ({ penjualans, handleSubmit }) => {
+const ModalCetak = ({ penjualans, resetPenjualan, handleSubmit }) => {
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
+
+  const cetak = () => {
+    resetPenjualan();
+    hideModal();
+  };
 
   return (
     <>
@@ -46,7 +51,7 @@ const ModalCetak = ({ penjualans, handleSubmit }) => {
             Batal
           </Button>
 
-          <Button mode="contained" onPress={hideModal}>
+          <Button mode="contained" onPress={cetak}>
             Simpan
           </Button>
         </View>

@@ -1,13 +1,28 @@
 import React from "react";
-import { TouchableRipple, List, Colors } from "react-native-paper";
+import { TouchableRipple, List, Colors, IconButton } from "react-native-paper";
 import { Text } from "react-native";
 
-const TextCard = ({ title, desc, icon, right, rightComponent, onPress }) => (
+const TextCard = ({
+  title,
+  desc,
+  icon,
+  right,
+  rightComponent,
+  onPress,
+  iconPress,
+}) => (
   <TouchableRipple rippleColor="rgba(0, 0, 0, .32)" onPress={onPress}>
     <List.Item
       title={title}
       description={desc}
-      left={(props) => <List.Icon {...props} icon={icon} />}
+      left={() => (
+        <IconButton
+          icon={icon}
+          size={30}
+          color="grey"
+          onPress={iconPress && iconPress}
+        />
+      )}
       right={() => {
         const render = right ? (
           <Text style={{ margin: 10, color: Colors.green500 }}>{right}</Text>

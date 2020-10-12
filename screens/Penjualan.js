@@ -1,5 +1,6 @@
 import React from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView, Text, StyleSheet } from "react-native";
+import { FAB } from "react-native-paper";
 import globalStyles from "../styles/globalStyles";
 import TextCard from "../components/TextCard";
 import InputKotak from "../components/InputKotak";
@@ -10,12 +11,43 @@ import { useForm, Controller } from "react-hook-form";
 const Penjualan = () => {
   // react-hook-form
   const { control, handleSubmit, errors } = useForm();
-
   // data penjualan yg ditambahkan lewat modal
   const [penjualans, setPenjualans] = React.useState([]);
+  // penjualan yg dipilih
+  const [pilih, setPilih] = React.useState([]);
 
-  // jika barang yg ad di modal diklik, maka barang akan msk ke daftar beli
+  // hapus brg yg dipilih
+  const hapusPilih = () => {
+    // hapus brg di state penjualans
+    for (let i = 0; i < pilih.length; i++) {
+      setPenjualans((prevPenjualan) =>
+        prevPenjualan.filter((penj) => penj.namaBrg != pilih[i].namaBrg)
+      );
+    }
+
+    // hapus brg di state pilih
+    setPilih((prevPilih) =>
+      prevPilih.filter((pil) => pil.namaBrg != pilih[i].namaBrg)
+    );
+  };
+
+  // jika icon brg di penjualan diklik, maka icon akan berubah jd ceklist
+  const togglePilih = (namaBrg) => {
+    // maka brg akan msk ke state pilih
+    const ada = pilih.find((pilih) => pilih.namaBrg == namaBrg);
+
+    if (ada) {
+      setPilih((prevPilih) =>
+        prevPilih.filter((pilih) => pilih.namaBrg != namaBrg)
+      );
+    } else {
+      setPilih((prevPilih) => prevPilih.concat({ namaBrg }));
+    }
+  };
+
+  // jika brg yg ad di modal diklik
   const tambahArr = (namaBrg, stok, harga) => {
+    // maka brg akan msk ke state penjualans
     setPenjualans((prevPenjualan) =>
       prevPenjualan.concat({
         namaBrg,
@@ -39,6 +71,9 @@ const Penjualan = () => {
     setPenjualans(penjualanBaru);
   };
 
+  // reset penjualans
+  const resetPenjualan = () => setPenjualans([]);
+
   return (
     <>
       <ScrollView>
@@ -54,7 +89,11 @@ const Penjualan = () => {
                   <TextCard
                     title={penjualan.namaBrg}
                     desc={`Stok: ${penjualan.stok}`}
-                    icon="cash-multiple"
+                    icon={
+                      pilih.find((pilih) => pilih.namaBrg == penjualan.namaBrg)
+                        ? "check-circle"
+                        : "cash-multiple"
+                    }
                     rightComponent={
                       // component buatan sendiri berisi textinput
                       <InputKotak
@@ -66,6 +105,7 @@ const Penjualan = () => {
                         }}
                       />
                     }
+                    iconPress={() => togglePilih(penjualan.namaBrg)}
                   />
                 )}
                 name={penjualan.namaBrg}
@@ -89,14 +129,34 @@ const Penjualan = () => {
             Belum ada barang yang dipilih.
           </Text>
         ) : (
-          <ModalCetak penjualans={penjualans} handleSubmit={handleSubmit} />
+          <ModalCetak
+            penjualans={penjualans}
+            resetPenjualan={resetPenjualan}
+            handleSubmit={handleSubmit}
+          />
         )}
       </ScrollView>
 
-      {/* tombol apung & modal pencarian brg */}
-      <Fab tambahArr={tambahArr} />
+      {/* jika brg ad yg dipilih */}
+      {pilih.length > 0 ? (
+        // tombol apung & modal pencarian brg
+        <FAB style={styles.fab} icon="delete" onPress={hapusPilih} />
+      ) : (
+        // tombol hapus
+        <Fab tambahArr={tambahArr} />
+      )}
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  fab: {
+    position: "absolute",
+    right: 30,
+    bottom: 30,
+    color: "#fff",
+    backgroundColor: "#6200ee",
+  },
+});
 
 export default Penjualan;
