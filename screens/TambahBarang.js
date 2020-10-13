@@ -1,21 +1,21 @@
-import React from "react";
-import { View, ScrollView, StyleSheet, Text } from "react-native";
-import { Button, TextInput } from "react-native-paper";
-import { useForm, Controller } from "react-hook-form";
-import globalStyles from "../styles/globalStyles";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import firebase from "../config/firebase";
+import React from 'react';
+import {View, ScrollView, StyleSheet, Text} from 'react-native';
+import {Button, TextInput} from 'react-native-paper';
+import {useForm, Controller} from 'react-hook-form';
+import globalStyles from '../styles/globalStyles';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import firebase from '../config/firebase';
 
 const TambahBarang = () => {
-  const { control, handleSubmit, errors } = useForm();
+  const {control, handleSubmit, errors} = useForm();
 
   // menambah brg ke db
   const addBarang = (data) => {
     const db = firebase.firestore();
-    db.collection("barangs")
+    db.collection('barangs')
       .add(data)
-      .then(() => console.log("barang added"))
-      .catch((err) => console.log("add barang failed", err));
+      .then(() => console.log('barang added'))
+      .catch((err) => console.log('add barang failed', err));
   };
 
   return (
@@ -25,7 +25,7 @@ const TambahBarang = () => {
           {/* dr react hook form */}
           <Controller
             control={control}
-            render={({ onChange, onBlur, value }) => (
+            render={({onChange, onBlur, value}) => (
               <View style={[globalStyles.whiteContainer, globalStyles.flexRow]}>
                 <MaterialCommunityIcons
                   name={input.icon}
@@ -41,15 +41,15 @@ const TambahBarang = () => {
                   onChangeText={(value) => onChange(value)}
                   value={value}
                   style={styles.inputStyle}
-                  keyboardType={input.keyboardType ? "default" : "numeric"}
+                  keyboardType={input.keyboardType ? 'default' : 'numeric'}
                 />
               </View>
             )}
             name={input.name}
             rules={
               input.rules
-                ? { required: true }
-                : { required: true, pattern: /^[1-9]\d*$/g }
+                ? {required: true}
+                : {required: true, pattern: /^[1-9]\d*$/g}
             }
             defaultValue=""
           />
@@ -63,7 +63,7 @@ const TambahBarang = () => {
         </View>
       ))}
 
-      <View style={{ padding: 20 }}>
+      <View style={{padding: 20}}>
         <Button mode="contained" onPress={handleSubmit(addBarang)}>
           Simpan
         </Button>
@@ -75,17 +75,17 @@ const TambahBarang = () => {
 // style
 const styles = StyleSheet.create({
   inputStyle: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     flex: 1,
   },
   inputIcon: {
     padding: 15.5,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: "lightgrey",
+    borderBottomColor: 'lightgrey',
   },
   error: {
-    color: "red",
+    color: 'red',
     marginLeft: 20,
   },
 });
@@ -93,26 +93,26 @@ const styles = StyleSheet.create({
 // input field
 const inputs = [
   {
-    label: "Nama barang",
-    name: "namaBarang",
-    icon: "cube",
+    label: 'Nama barang',
+    name: 'namaBarang',
+    icon: 'cube',
     rules: true,
     keyboardType: true,
   },
   {
-    label: "Harga beli",
-    name: "hargaBeli",
-    icon: "cash-multiple",
+    label: 'Harga beli',
+    name: 'hargaBeli',
+    icon: 'cash-multiple',
   },
   {
-    label: "Harga jual",
-    name: "hargaJual",
-    icon: "cash-multiple",
+    label: 'Harga jual',
+    name: 'hargaJual',
+    icon: 'cash-multiple',
   },
   {
-    label: "Stok",
-    name: "stok",
-    icon: "database",
+    label: 'Stok',
+    name: 'stok',
+    icon: 'database',
   },
 ];
 

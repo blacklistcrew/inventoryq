@@ -1,37 +1,37 @@
-import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   HomeStack,
   DaftarBarangStack,
   PengeluaranStack,
   PenjualanStack,
-} from "./Stacks";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+} from './Stacks';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
           switch (route.name) {
-            case "Daftar Barang":
-              iconName = focused ? "cube" : "cube-outline";
+            case 'Daftar Barang':
+              iconName = focused ? 'cube' : 'cube-outline';
               break;
-            case "Pengeluaran":
+            case 'Pengeluaran':
               iconName = focused
-                ? "chevron-left-circle"
-                : "chevron-left-circle-outline";
+                ? 'chevron-left-circle'
+                : 'chevron-left-circle-outline';
               break;
-            case "Penjualan":
-              iconName = focused ? "cash-multiple" : "cash";
+            case 'Penjualan':
+              iconName = focused ? 'cash-multiple' : 'cash';
               break;
 
             default:
-              iconName = focused ? "home" : "home-outline";
+              iconName = focused ? 'home' : 'home-outline';
               break;
           }
 
@@ -42,10 +42,9 @@ const Tabs = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: "#6200ee",
-        inactiveTintColor: "gray",
-      }}
-    >
+        activeTintColor: '#6200ee',
+        inactiveTintColor: 'gray',
+      }}>
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Daftar Barang" component={DaftarBarangStack} />
       <Tab.Screen name="Pengeluaran" component={PengeluaranStack} />
