@@ -1,16 +1,16 @@
-import React from "react";
-import { View, ScrollView, Text, StyleSheet } from "react-native";
-import { FAB } from "react-native-paper";
-import globalStyles from "../styles/globalStyles";
-import TextCard from "../components/TextCard";
-import InputKotak from "../components/InputKotak";
-import Fab from "../components/Fab";
-import ModalCetak from "../components/ModalCetak";
-import { useForm, Controller } from "react-hook-form";
+import React from 'react';
+import {View, ScrollView, Text, StyleSheet} from 'react-native';
+import {FAB} from 'react-native-paper';
+import globalStyles from '../styles/globalStyles';
+import TextCard from '../components/TextCard';
+import InputKotak from '../components/InputKotak';
+import Fab from '../components/Fab';
+import ModalCetak from '../components/ModalCetak';
+import {useForm, Controller} from 'react-hook-form';
 
 const Penjualan = () => {
   // react-hook-form
-  const { control, handleSubmit, errors } = useForm();
+  const {control, handleSubmit, errors} = useForm();
   // data penjualan yg ditambahkan lewat modal
   const [penjualans, setPenjualans] = React.useState([]);
   // penjualan yg dipilih
@@ -21,13 +21,13 @@ const Penjualan = () => {
     // hapus brg di state penjualans
     for (let i = 0; i < pilih.length; i++) {
       setPenjualans((prevPenjualan) =>
-        prevPenjualan.filter((penj) => penj.namaBrg != pilih[i].namaBrg)
+        prevPenjualan.filter((penj) => penj.namaBrg != pilih[i].namaBrg),
       );
     }
 
     // hapus brg di state pilih
     setPilih((prevPilih) =>
-      prevPilih.filter((pil) => pil.namaBrg != pilih[i].namaBrg)
+      prevPilih.filter((pil) => pil.namaBrg != pilih[i].namaBrg),
     );
   };
 
@@ -38,10 +38,10 @@ const Penjualan = () => {
 
     if (ada) {
       setPilih((prevPilih) =>
-        prevPilih.filter((pilih) => pilih.namaBrg != namaBrg)
+        prevPilih.filter((pilih) => pilih.namaBrg != namaBrg),
       );
     } else {
-      setPilih((prevPilih) => prevPilih.concat({ namaBrg }));
+      setPilih((prevPilih) => prevPilih.concat({namaBrg}));
     }
   };
 
@@ -53,8 +53,8 @@ const Penjualan = () => {
         namaBrg,
         stok,
         harga,
-        jumlahBrg: "",
-      })
+        jumlahBrg: '',
+      }),
     );
   };
 
@@ -63,8 +63,8 @@ const Penjualan = () => {
     // ubah properti jumlahBrg
     const penjualanBaru = penjualans.map((penjualan) =>
       penjualan.namaBrg == item.namaBrg
-        ? { ...penjualan, jumlahBrg: text }
-        : penjualan
+        ? {...penjualan, jumlahBrg: text}
+        : penjualan,
     );
 
     // ubah state penjualans
@@ -84,15 +84,15 @@ const Penjualan = () => {
               {/* component dr react-hook-form */}
               <Controller
                 control={control}
-                render={({ onChange, onBlur, value }) => (
+                render={({onChange, onBlur, value}) => (
                   // component buatan sendiri berisi card & textinput
                   <TextCard
                     title={penjualan.namaBrg}
                     desc={`Stok: ${penjualan.stok}`}
                     icon={
                       pilih.find((pilih) => pilih.namaBrg == penjualan.namaBrg)
-                        ? "check-circle"
-                        : "cash-multiple"
+                        ? 'check-circle'
+                        : 'cash-multiple'
                     }
                     rightComponent={
                       // component buatan sendiri berisi textinput
@@ -109,14 +109,14 @@ const Penjualan = () => {
                   />
                 )}
                 name={penjualan.namaBrg}
-                rules={{ required: true, pattern: /^[1-9]\d*$/g }}
+                rules={{required: true, pattern: /^[1-9]\d*$/g}}
                 defaultValue=""
                 key={penjualan.namaBrg}
               />
 
               {/* error */}
               {errors[penjualan.namaBrg] && (
-                <Text style={{ color: "red", marginLeft: 20 }}>
+                <Text style={{color: 'red', marginLeft: 20}}>
                   Jumlah barang harus diisi dengan benar.
                 </Text>
               )}
@@ -125,13 +125,13 @@ const Penjualan = () => {
 
         {/* tombol simpan & modal cetak */}
         {penjualans.length == 0 ? (
-          <Text style={{ color: "grey", textAlign: "center", marginTop: 30 }}>
+          <Text style={{color: 'grey', textAlign: 'center', marginTop: 30}}>
             Belum ada barang yang dipilih.
           </Text>
         ) : (
           <ModalCetak
-            penjualans={penjualans}
-            resetPenjualan={resetPenjualan}
+            items={penjualans}
+            resetItems={resetPenjualan}
             handleSubmit={handleSubmit}
           />
         )}
@@ -151,11 +151,11 @@ const Penjualan = () => {
 
 const styles = StyleSheet.create({
   fab: {
-    position: "absolute",
+    position: 'absolute',
     right: 30,
     bottom: 30,
-    color: "#fff",
-    backgroundColor: "#6200ee",
+    color: '#fff',
+    backgroundColor: '#6200ee',
   },
 });
 

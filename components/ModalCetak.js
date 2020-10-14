@@ -1,22 +1,22 @@
-import React from "react";
-import { View, FlatList, Text, Modal } from "react-native";
-import { Button } from "react-native-paper";
-import globalStyles from "../styles/globalStyles";
-import TextCard from "./TextCard";
+import React from 'react';
+import {View, FlatList, Text, Modal} from 'react-native';
+import {Button} from 'react-native-paper';
+import globalStyles from '../styles/globalStyles';
+import TextCard from './TextCard';
 
-const ModalCetak = ({ penjualans, resetPenjualan, handleSubmit }) => {
+const ModalCetak = ({items, resetItems, handleSubmit}) => {
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
   const cetak = () => {
-    resetPenjualan();
+    resetItems();
     hideModal();
   };
 
   return (
     <>
-      <View style={{ ...globalStyles.whiteContainer, paddingHorizontal: 20 }}>
+      <View style={{...globalStyles.whiteContainer, paddingHorizontal: 20}}>
         <Button mode="contained" onPress={handleSubmit(showModal)}>
           Simpan
         </Button>
@@ -25,15 +25,15 @@ const ModalCetak = ({ penjualans, resetPenjualan, handleSubmit }) => {
       {/* modal */}
       <Modal animationType="slide" visible={visible} onRequestClose={hideModal}>
         {/* judul */}
-        <Text style={{ fontSize: 20, textAlign: "center", marginTop: 20 }}>
+        <Text style={{fontSize: 20, textAlign: 'center', marginTop: 20}}>
           Cetak Penjualan
         </Text>
 
         {/* daftar barang */}
-        <View style={globalStyles.whiteContainer} style={{ flex: 1 }}>
+        <View style={globalStyles.whiteContainer} style={{flex: 1}}>
           <FlatList
-            data={penjualans}
-            renderItem={({ item }) => (
+            data={items}
+            renderItem={({item}) => (
               <TextCard
                 title={`${item.jumlahBrg}x ${item.namaBrg}`}
                 desc={`${item.jumlahBrg} x Rp ${item.harga},-`}
@@ -46,7 +46,7 @@ const ModalCetak = ({ penjualans, resetPenjualan, handleSubmit }) => {
         </View>
 
         {/* tombol */}
-        <View style={{ ...globalStyles.flexRow, paddingVertical: 50 }}>
+        <View style={{...globalStyles.flexRow, paddingVertical: 50}}>
           <Button mode="contained" onPress={hideModal} color="lightgrey">
             Batal
           </Button>

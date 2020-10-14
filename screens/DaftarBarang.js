@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, FlatList, Text} from 'react-native';
+import {View, FlatList, Text, TextInput} from 'react-native';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
 import SortBy from '../components/SortBy';
@@ -8,9 +8,10 @@ import firestore from '@react-native-firebase/firestore';
 const DaftarBarang = () => {
   const [loading, setLoading] = useState(true);
   const [barangs, setBarangs] = useState([]);
+  const [cari, setCari] = useState([]);
+  const ref = firestore().collection('barangs').orderBy('createdAt', 'desc');
 
-  const ref = firestore().collection('barangs');
-
+  // firestore
   useEffect(() => {
     return ref.onSnapshot((querySnapshot) => {
       const list = [];
@@ -25,16 +26,38 @@ const DaftarBarang = () => {
       });
 
       setBarangs(list);
+      setCari(list);
+
       if (loading) {
         setLoading(false);
       }
     });
   }, []);
 
+  // utk pencarian barang
+  const changeBarang = (text) => {
+    const data = cari.filter((barang) =>
+      barang.namaBrg.toLowerCase().includes(text.toLowerCase()),
+    );
+    setBarangs(data);
+  };
+
   return (
     <>
       {/* urutkan berdasarkan */}
       <View style={globalStyles.whiteContainer}>
+        <TextInput
+          placeholder="Cari barang"
+          onChangeText={changeBarang}
+          onBlur={() => setBarangs(cari)}
+          style={{
+            borderWidth: 1,
+            borderColor: 'lightgrey',
+            margin: 10,
+            paddingHorizontal: 20,
+          }}
+        />
+
         <View style={globalStyles.flexRow}>
           {/* waktu */}
           <SortBy title="Waktu" />
@@ -46,8 +69,8 @@ const DaftarBarang = () => {
       {/* daftar barang */}
       <View style={globalStyles.whiteContainer}>
         {loading && (
-          <Text style={{color: 'grey', textAlign: 'center', marginTop: 30}}>
-            Belum ada barang yang dipilih.
+          <Text style={{color: 'grey', textAlign: 'center', margin: 30}}>
+            Loading...
           </Text>
         )}
 

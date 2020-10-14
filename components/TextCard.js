@@ -1,6 +1,6 @@
-import React from "react";
-import { TouchableRipple, List, Colors, IconButton } from "react-native-paper";
-import { Text } from "react-native";
+import React from 'react';
+import {TouchableRipple, List, Colors, IconButton} from 'react-native-paper';
+import {Text} from 'react-native';
 
 const TextCard = ({
   title,
@@ -25,7 +25,7 @@ const TextCard = ({
       )}
       right={() => {
         const render = right ? (
-          <Text style={{ margin: 10, color: Colors.green500 }}>{right}</Text>
+          <Text style={{margin: 10, color: Colors.green500}}>{right}</Text>
         ) : rightComponent ? (
           rightComponent
         ) : null;

@@ -1,13 +1,16 @@
 import React from 'react';
 import {View, ScrollView, StyleSheet, Text} from 'react-native';
-import {Button, TextInput} from 'react-native-paper';
+import {Button, TextInput, Snackbar} from 'react-native-paper';
 import {useForm, Controller} from 'react-hook-form';
 import globalStyles from '../styles/globalStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import firestore from '@react-native-firebase/firestore';
 
-const TambahBarang = () => {
+const TambahBarang = ({navigation}) => {
   const {control, handleSubmit, errors, reset} = useForm();
+  const [notif, setNotif] = React.useState(false);
+  const toggleNotif = () => setNotif(!notif);
+  const dismissNotif = () => setNotif(false);
 
   // menambah brg ke db
   const addBarang = ({namaBrg, hargaBeli, hargaJual}) => {
@@ -18,10 +21,12 @@ const TambahBarang = () => {
         hargaBeli: parseInt(hargaBeli),
         hargaJual: parseInt(hargaJual),
         stok: 0,
+        createdAt: new Date(),
       })
       .then(() => {
         console.log('barang added');
         reset();
+        toggleNotif();
       })
       .catch((err) => console.log('add barang failed', err));
   };
@@ -50,6 +55,7 @@ const TambahBarang = () => {
                   value={value}
                   style={styles.inputStyle}
                   keyboardType={input.keyboardType ? 'default' : 'numeric'}
+                  autoCapitalize="words"
                 />
               </View>
             )}
@@ -78,6 +84,17 @@ const TambahBarang = () => {
           Simpan
         </Button>
       </View>
+
+      {/* Notif */}
+      <Snackbar
+        visible={notif}
+        onDismiss={dismissNotif}
+        action={{
+          label: 'Daftar Barang',
+          onPress: () => navigation.navigate('Daftar Barang'),
+        }}>
+        Barang telah disimpan.
+      </Snackbar>
     </ScrollView>
   );
 };

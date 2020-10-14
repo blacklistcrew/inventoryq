@@ -1,11 +1,11 @@
-import React from "react";
-import { StyleSheet, View, FlatList, Modal } from "react-native";
-import { FAB, TextInput } from "react-native-paper";
-import globalStyles from "../styles/globalStyles";
-import arrBarang from "../data/arrBarang";
-import TextCard from "../components/TextCard";
+import React from 'react';
+import {StyleSheet, View, FlatList, Modal} from 'react-native';
+import {FAB, TextInput} from 'react-native-paper';
+import globalStyles from '../styles/globalStyles';
+import arrBarang from '../data/arrBarang';
+import TextCard from '../components/TextCard';
 
-const Fab = ({ tambahArr }) => {
+const Fab = ({tambahArr}) => {
   const [listBarang, setListBarang] = React.useState(arrBarang);
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
@@ -14,7 +14,7 @@ const Fab = ({ tambahArr }) => {
   // utk pencarian barang
   const changeBarang = (text) => {
     const data = arrBarang.filter((barang) =>
-      barang.nama.toLowerCase().includes(text.toLowerCase())
+      barang.nama.toLowerCase().includes(text.toLowerCase()),
     );
     setListBarang(data);
   };
@@ -26,10 +26,10 @@ const Fab = ({ tambahArr }) => {
         <TextInput label="Cari barang" onChangeText={changeBarang} />
 
         {/* daftar barang */}
-        <View style={globalStyles.whiteContainer} style={{ flex: 1 }}>
+        <View style={globalStyles.whiteContainer} style={{flex: 1}}>
           <FlatList
             data={listBarang}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <TextCard
                 title={item.nama}
                 desc={`Stok: ${item.stok}`}
@@ -57,11 +57,11 @@ const Fab = ({ tambahArr }) => {
 
 const styles = StyleSheet.create({
   fab: {
-    position: "absolute",
+    position: 'absolute',
     right: 30,
     bottom: 30,
-    color: "#fff",
-    backgroundColor: "#6200ee",
+    color: '#fff',
+    backgroundColor: '#6200ee',
   },
 });
 
