@@ -4,17 +4,25 @@ import {Button, TextInput} from 'react-native-paper';
 import {useForm, Controller} from 'react-hook-form';
 import globalStyles from '../styles/globalStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import firebase from '../config/firebase';
+import firestore from '@react-native-firebase/firestore';
 
 const TambahBarang = () => {
-  const {control, handleSubmit, errors} = useForm();
+  const {control, handleSubmit, errors, reset} = useForm();
 
   // menambah brg ke db
-  const addBarang = (data) => {
-    const db = firebase.firestore();
-    db.collection('barangs')
-      .add(data)
-      .then(() => console.log('barang added'))
+  const addBarang = ({namaBrg, hargaBeli, hargaJual}) => {
+    firestore()
+      .collection('barangs')
+      .add({
+        namaBrg,
+        hargaBeli: parseInt(hargaBeli),
+        hargaJual: parseInt(hargaJual),
+        stok: 0,
+      })
+      .then(() => {
+        console.log('barang added');
+        reset();
+      })
       .catch((err) => console.log('add barang failed', err));
   };
 
@@ -57,7 +65,9 @@ const TambahBarang = () => {
           {/* error */}
           {errors[input.name] && (
             <Text style={styles.error}>
-              Jumlah barang harus diisi dengan benar.
+              {input.error
+                ? input.error
+                : 'Jumlah barang harus diisi dengan benar.'}
             </Text>
           )}
         </View>
@@ -94,10 +104,11 @@ const styles = StyleSheet.create({
 const inputs = [
   {
     label: 'Nama barang',
-    name: 'namaBarang',
+    name: 'namaBrg',
     icon: 'cube',
     rules: true,
     keyboardType: true,
+    error: 'Nama barang harus diisi.',
   },
   {
     label: 'Harga beli',
@@ -108,11 +119,6 @@ const inputs = [
     label: 'Harga jual',
     name: 'hargaJual',
     icon: 'cash-multiple',
-  },
-  {
-    label: 'Stok',
-    name: 'stok',
-    icon: 'database',
   },
 ];
 

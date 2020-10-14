@@ -10,6 +10,13 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-firebase/app": "^8.4.5",
+    "@react-native-firebase/firestore": "^7.8.6",
+    "@react-navigation/bottom-tabs": "^5.9.2",
+    "@react-navigation/drawer": "^5.9.3",
+    "@react-navigation/native": "^5.7.6",
+    "@react-navigation/stack": "^5.9.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-hook-form": "^6.9.2",
@@ -20,13 +27,7 @@
     "react-native-safe-area-context": "^3.1.4",
     "react-native-screens": "^2.10.1",
     "react-native-vector-icons": "^7.1.0",
-    "react-native-web": "~0.13.12",
-    "@react-native-community/masked-view": "^0.1.10",
-    "@react-navigation/bottom-tabs": "^5.9.2",
-    "@react-navigation/drawer": "^5.9.3",
-    "@react-navigation/native": "^5.7.6",
-    "@react-navigation/stack": "^5.9.3",
-    "firebase": "7.9.0"
+    "react-native-web": "~0.13.12"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
