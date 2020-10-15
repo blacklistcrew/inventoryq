@@ -67,25 +67,25 @@ const DaftarBarang = () => {
       </View>
 
       {/* daftar barang */}
-      <View style={globalStyles.whiteContainer}>
-        {loading && (
-          <Text style={{color: 'grey', textAlign: 'center', margin: 30}}>
-            Loading...
-          </Text>
-        )}
-
-        <FlatList
-          data={barangs}
-          renderItem={({item}) => (
-            <TextCard
-              title={item.namaBrg}
-              desc={`Stok: ${item.stok}`}
-              icon="cube"
-              right={`Rp ${item.hargaJual},-`}
-            />
-          )}
-        />
-      </View>
+      {loading ? (
+        <Text style={{color: 'grey', textAlign: 'center', margin: 30}}>
+          Loading...
+        </Text>
+      ) : (
+        <View style={globalStyles.whiteContainer}>
+          <FlatList
+            data={barangs}
+            renderItem={({item}) => (
+              <TextCard
+                title={item.namaBrg}
+                desc={`Stok: ${item.stok}`}
+                icon="cube"
+                right={`Rp ${item.hargaJual},-`}
+              />
+            )}
+          />
+        </View>
+      )}
     </>
   );
 };

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, ScrollView, Text, StyleSheet} from 'react-native';
-import {FAB} from 'react-native-paper';
+import {FAB, Snackbar} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
 import InputKotak from '../components/InputKotak';
@@ -12,23 +12,27 @@ const Pengeluaran = () => {
   // react-hook-form
   const {control, handleSubmit, errors} = useForm();
   // data pengeluaran yg ditambahkan lewat modal
-  const [pengeluarans, setPengeluarans] = React.useState([]);
+  const [pengeluarans, setPengeluarans] = useState([]);
   // pengeluaran yg dipilih
-  const [pilih, setPilih] = React.useState([]);
+  const [pilih, setPilih] = useState([]);
+  // snackbar
+  const [notif, setNotif] = useState(false);
+  const toggleNotif = () => setNotif(!notif);
+  const dismissNotif = () => setNotif(false);
 
   // hapus brg yg dipilih
   const hapusPilih = () => {
-    // hapus brg di state pengeluarans
     for (let i = 0; i < pilih.length; i++) {
+      // hapus brg di state pengeluarans
       setPengeluarans((prevPengeluaran) =>
         prevPengeluaran.filter((penj) => penj.namaBrg != pilih[i].namaBrg),
       );
-    }
 
-    // hapus brg di state pilih
-    setPilih((prevPilih) =>
-      prevPilih.filter((pil) => pil.namaBrg != pilih[i].namaBrg),
-    );
+      // hapus brg di state pilih
+      setPilih((prevPilih) =>
+        prevPilih.filter((pil) => pil.namaBrg != pilih[i].namaBrg),
+      );
+    }
   };
 
   // jika icon brg di pengeluaran diklik, maka icon akan berubah jd ceklist
@@ -63,7 +67,7 @@ const Pengeluaran = () => {
     // ubah properti jumlahBrg
     const pengeluaranBaru = pengeluarans.map((pengeluaran) =>
       pengeluaran.namaBrg == item.namaBrg
-        ? {...pengeluaran, jumlahBrg: text}
+        ? {...pengeluaran, jumlahBrg: parseInt(text)}
         : pengeluaran,
     );
 
@@ -135,6 +139,8 @@ const Pengeluaran = () => {
             items={pengeluarans}
             resetItems={resetPengeluaran}
             handleSubmit={handleSubmit}
+            title="Pengeluaran"
+            toggleNotif={toggleNotif}
           />
         )}
       </ScrollView>
@@ -145,8 +151,13 @@ const Pengeluaran = () => {
         <FAB style={styles.fab} icon="delete" onPress={hapusPilih} />
       ) : (
         // tombol hapus
-        <Fab tambahArr={tambahArr} />
+        <Fab tambahArr={tambahArr} title="Pengeluaran" />
       )}
+
+      {/* Notif */}
+      <Snackbar visible={notif} onDismiss={dismissNotif}>
+        Pengeluaran telah disimpan.
+      </Snackbar>
     </>
   );
 };

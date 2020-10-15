@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, ScrollView, Text, StyleSheet} from 'react-native';
-import {FAB} from 'react-native-paper';
+import {FAB, Snackbar} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
 import InputKotak from '../components/InputKotak';
@@ -12,23 +12,27 @@ const Penjualan = () => {
   // react-hook-form
   const {control, handleSubmit, errors} = useForm();
   // data penjualan yg ditambahkan lewat modal
-  const [penjualans, setPenjualans] = React.useState([]);
+  const [penjualans, setPenjualans] = useState([]);
   // penjualan yg dipilih
-  const [pilih, setPilih] = React.useState([]);
+  const [pilih, setPilih] = useState([]);
+  // snackbar
+  const [notif, setNotif] = useState(false);
+  const toggleNotif = () => setNotif(!notif);
+  const dismissNotif = () => setNotif(false);
 
   // hapus brg yg dipilih
   const hapusPilih = () => {
-    // hapus brg di state penjualans
     for (let i = 0; i < pilih.length; i++) {
+      // hapus brg di state penjualans
       setPenjualans((prevPenjualan) =>
         prevPenjualan.filter((penj) => penj.namaBrg != pilih[i].namaBrg),
       );
-    }
 
-    // hapus brg di state pilih
-    setPilih((prevPilih) =>
-      prevPilih.filter((pil) => pil.namaBrg != pilih[i].namaBrg),
-    );
+      // hapus brg di state pilih
+      setPilih((prevPilih) =>
+        prevPilih.filter((pil) => pil.namaBrg != pilih[i].namaBrg),
+      );
+    }
   };
 
   // jika icon brg di penjualan diklik, maka icon akan berubah jd ceklist
@@ -63,7 +67,7 @@ const Penjualan = () => {
     // ubah properti jumlahBrg
     const penjualanBaru = penjualans.map((penjualan) =>
       penjualan.namaBrg == item.namaBrg
-        ? {...penjualan, jumlahBrg: text}
+        ? {...penjualan, jumlahBrg: parseInt(text)}
         : penjualan,
     );
 
@@ -133,18 +137,25 @@ const Penjualan = () => {
             items={penjualans}
             resetItems={resetPenjualan}
             handleSubmit={handleSubmit}
+            title="Penjualan"
+            toggleNotif={toggleNotif}
           />
         )}
       </ScrollView>
 
       {/* jika brg ad yg dipilih */}
       {pilih.length > 0 ? (
-        // tombol apung & modal pencarian brg
+        // tombol hapus
         <FAB style={styles.fab} icon="delete" onPress={hapusPilih} />
       ) : (
-        // tombol hapus
-        <Fab tambahArr={tambahArr} />
+        // tombol apung & modal pencarian brg
+        <Fab tambahArr={tambahArr} title="Penjualan" />
       )}
+
+      {/* Notif */}
+      <Snackbar visible={notif} onDismiss={dismissNotif}>
+        Pengeluaran telah disimpan.
+      </Snackbar>
     </>
   );
 };
