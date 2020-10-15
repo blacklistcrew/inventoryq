@@ -32,58 +32,61 @@ const TambahBarang = ({navigation}) => {
   };
 
   return (
-    <ScrollView>
-      {inputs.map((input, i) => (
-        <View key={i.toString()}>
-          {/* dr react hook form */}
-          <Controller
-            control={control}
-            render={({onChange, onBlur, value}) => (
-              <View style={[globalStyles.whiteContainer, globalStyles.flexRow]}>
-                <MaterialCommunityIcons
-                  name={input.icon}
-                  size={30}
-                  color="grey"
-                  style={styles.inputIcon}
-                />
+    <>
+      <ScrollView>
+        {inputs.map((input, i) => (
+          <View key={i.toString()}>
+            {/* dr react hook form */}
+            <Controller
+              control={control}
+              render={({onChange, onBlur, value}) => (
+                <View
+                  style={[globalStyles.whiteContainer, globalStyles.flexRow]}>
+                  <MaterialCommunityIcons
+                    name={input.icon}
+                    size={30}
+                    color="grey"
+                    style={styles.inputIcon}
+                  />
 
-                {/* component buatan sendiri */}
-                <TextInput
-                  label={input.label}
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={value}
-                  style={styles.inputStyle}
-                  keyboardType={input.keyboardType ? 'default' : 'numeric'}
-                  autoCapitalize="words"
-                />
-              </View>
+                  {/* component buatan sendiri */}
+                  <TextInput
+                    label={input.label}
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    style={styles.inputStyle}
+                    keyboardType={input.keyboardType ? 'default' : 'numeric'}
+                    autoCapitalize="words"
+                  />
+                </View>
+              )}
+              name={input.name}
+              rules={
+                input.rules
+                  ? {required: true}
+                  : {required: true, pattern: /^[1-9]\d*$/g}
+              }
+              defaultValue=""
+            />
+
+            {/* error */}
+            {errors[input.name] && (
+              <Text style={styles.error}>
+                {input.error
+                  ? input.error
+                  : 'Jumlah barang harus diisi dengan benar.'}
+              </Text>
             )}
-            name={input.name}
-            rules={
-              input.rules
-                ? {required: true}
-                : {required: true, pattern: /^[1-9]\d*$/g}
-            }
-            defaultValue=""
-          />
+          </View>
+        ))}
 
-          {/* error */}
-          {errors[input.name] && (
-            <Text style={styles.error}>
-              {input.error
-                ? input.error
-                : 'Jumlah barang harus diisi dengan benar.'}
-            </Text>
-          )}
+        <View style={{padding: 20}}>
+          <Button mode="contained" onPress={handleSubmit(addBarang)}>
+            Simpan
+          </Button>
         </View>
-      ))}
-
-      <View style={{padding: 20}}>
-        <Button mode="contained" onPress={handleSubmit(addBarang)}>
-          Simpan
-        </Button>
-      </View>
+      </ScrollView>
 
       {/* Notif */}
       <Snackbar
@@ -95,7 +98,7 @@ const TambahBarang = ({navigation}) => {
         }}>
         Barang telah disimpan.
       </Snackbar>
-    </ScrollView>
+    </>
   );
 };
 

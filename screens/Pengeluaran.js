@@ -4,7 +4,7 @@ import {FAB} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
 import InputKotak from '../components/InputKotak';
-import Fab from '../components/Fab';
+// import Fab from '../components/Fab';
 import ModalCetak from '../components/ModalCetak';
 import {useForm, Controller} from 'react-hook-form';
 
@@ -145,7 +145,8 @@ const Pengeluaran = () => {
         <FAB style={styles.fab} icon="delete" onPress={hapusPilih} />
       ) : (
         // tombol hapus
-        <Fab tambahArr={tambahArr} />
+        // <Fab tambahArr={tambahArr} />
+        <FAB style={styles.fab} icon="plus" />
       )}
     </>
   );

@@ -16,12 +16,7 @@ const TextCard = ({
       title={title}
       description={desc}
       left={() => (
-        <IconButton
-          icon={icon}
-          size={30}
-          color="grey"
-          onPress={iconPress && iconPress}
-        />
+        <IconButton icon={icon} size={30} color="grey" onPress={iconPress} />
       )}
       right={() => {
         const render = right ? (

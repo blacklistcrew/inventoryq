@@ -5,7 +5,7 @@ import TextCard from '../components/TextCard';
 import SortBy from '../components/SortBy';
 import firestore from '@react-native-firebase/firestore';
 
-const DaftarBarang = () => {
+const DaftarBarang = ({hideModal, tambahArr}) => {
   const [loading, setLoading] = useState(true);
   const [barangs, setBarangs] = useState([]);
   const [cari, setCari] = useState([]);
@@ -42,6 +42,12 @@ const DaftarBarang = () => {
     setBarangs(data);
   };
 
+  // utk modal
+  const barangPress = () => {
+    tambahArr && tambahArr();
+    hideModal && hideModal();
+  };
+
   return (
     <>
       {/* urutkan berdasarkan */}
@@ -67,25 +73,27 @@ const DaftarBarang = () => {
       </View>
 
       {/* daftar barang */}
-      <View style={globalStyles.whiteContainer}>
-        {loading && (
-          <Text style={{color: 'grey', textAlign: 'center', margin: 30}}>
-            Loading...
-          </Text>
-        )}
 
-        <FlatList
-          data={barangs}
-          renderItem={({item}) => (
-            <TextCard
-              title={item.namaBrg}
-              desc={`Stok: ${item.stok}`}
-              icon="cube"
-              right={`Rp ${item.hargaJual},-`}
-            />
-          )}
-        />
-      </View>
+      {loading ? (
+        <Text style={{color: 'grey', textAlign: 'center', margin: 30}}>
+          Loading...
+        </Text>
+      ) : (
+        <View style={globalStyles.whiteContainer}>
+          <FlatList
+            data={barangs}
+            renderItem={({item}) => (
+              <TextCard
+                title={item.namaBrg}
+                desc={`Stok: ${item.stok}`}
+                icon="cube"
+                right={`Rp ${item.hargaJual},-`}
+                onPress={barangPress}
+              />
+            )}
+          />
+        </View>
+      )}
     </>
   );
 };

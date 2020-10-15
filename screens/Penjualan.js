@@ -1,20 +1,24 @@
-import React from 'react';
-import {View, ScrollView, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {View, ScrollView, Text, StyleSheet, Modal} from 'react-native';
 import {FAB} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
 import InputKotak from '../components/InputKotak';
-import Fab from '../components/Fab';
 import ModalCetak from '../components/ModalCetak';
 import {useForm, Controller} from 'react-hook-form';
+import DaftarBarang from './DaftarBarang';
 
-const Penjualan = () => {
+const Penjualan = ({navigation}) => {
   // react-hook-form
   const {control, handleSubmit, errors} = useForm();
   // data penjualan yg ditambahkan lewat modal
-  const [penjualans, setPenjualans] = React.useState([]);
+  const [penjualans, setPenjualans] = useState([]);
   // penjualan yg dipilih
-  const [pilih, setPilih] = React.useState([]);
+  const [pilih, setPilih] = useState([]);
+  // modal
+  const [visible, setVisible] = useState(false);
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
 
   // hapus brg yg dipilih
   const hapusPilih = () => {
@@ -139,11 +143,29 @@ const Penjualan = () => {
 
       {/* jika brg ad yg dipilih */}
       {pilih.length > 0 ? (
-        // tombol apung & modal pencarian brg
+        // tombol hapus
         <FAB style={styles.fab} icon="delete" onPress={hapusPilih} />
       ) : (
-        // tombol hapus
-        <Fab tambahArr={tambahArr} />
+        <>
+          {/* tombol apung */}
+          <FAB
+            style={styles.fab}
+            icon="plus"
+            onPress={() => navigation.navigate('Tambah Item Penjualan')}
+          />
+
+          {/* modal pencarian brg */}
+          <Modal
+            animationType="slide"
+            visible={visible}
+            onRequestClose={hideModal}>
+            {/* daftar barang */}
+            <DaftarBarang hideModal={hideModal} tambahArr={tambahArr} />
+
+            {/* tombol hide modal */}
+            <FAB style={styles.fab} icon="close" onPress={hideModal} />
+          </Modal>
+        </>
       )}
     </>
   );
