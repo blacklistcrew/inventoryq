@@ -43,7 +43,7 @@ const DaftarBarang = () => {
   };
 
   return (
-    <>
+    <View style={{flex: 1}}>
       {/* urutkan berdasarkan */}
       <View style={globalStyles.whiteContainer}>
         <TextInput
@@ -72,21 +72,19 @@ const DaftarBarang = () => {
           Loading...
         </Text>
       ) : (
-        <View style={globalStyles.whiteContainer}>
-          <FlatList
-            data={barangs}
-            renderItem={({item}) => (
-              <TextCard
-                title={item.namaBrg}
-                desc={`Stok: ${item.stok}`}
-                icon="cube"
-                right={`Rp ${item.hargaJual},-`}
-              />
-            )}
-          />
-        </View>
+        <FlatList
+          data={barangs}
+          renderItem={({item}) => (
+            <TextCard
+              title={item.namaBrg}
+              desc={`Stok: ${item.stok}`}
+              icon="cube"
+              right={`Rp ${item.hargaJual},-`}
+            />
+          )}
+        />
       )}
-    </>
+    </View>
   );
 };
 

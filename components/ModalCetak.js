@@ -1,49 +1,50 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, FlatList, Text, Modal} from 'react-native';
 import {Button} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from './TextCard';
 import firestore from '@react-native-firebase/firestore';
+import firebase from '@react-native-firebase/app';
 
 const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
+  // trigger transaksi (tambah / krg stok)
+  const [trigger, setTrigger] = useState(false);
   // modal
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
   // total pengeluaran
   const reducer = (accumulator, currentValue) => accumulator + currentValue;
   const total = items
-    .map((item) => parseInt(item.jumlahBrg) * item.harga)
+    .map((item) => item.jumlahBrg * item.harga)
     .reduce(reducer);
+
+  // mengurangi / menambah stok brg
+  useEffect(() => {
+    if (trigger) {
+      // tambah stok
+      items.map((item) => {
+        firestore()
+          .collection('barangs')
+          .doc(item.key)
+          .update({
+            stok: firebase.firestore.FieldValue.increment(item.jumlahBrg),
+          })
+          .then(() => console.log(`stok ${item.namaBrg} ditambah`))
+          .catch((err) =>
+            console.log(`stok ${item.namaBrg} gagal ditambah`, err),
+          );
+      });
+
+      // cetak setelah tambah stok / krg stok brg selesai
+      setTrigger(false);
+      cetak();
+    }
+  }, [trigger]);
 
   // menentukan doc
   const doc = title == 'Penjualan' ? 'penjualans' : 'pengeluarans';
-
-  // mengurangi / menambah stok brg
-  const transaksi = () => {
-    return firestore()
-      .runTransaction(function (transaction) {
-        items.map((item) => {
-          const docRef = firestore().collection(doc).doc(item.namaBrg);
-          // This code may get re-run multiple times if there are conflicts.
-          return transaction.get(docRef).then(function (sfDoc) {
-            if (!sfDoc.exists) {
-              throw `document ${item.key} does not exist`;
-            }
-
-            // menambah stok brg sesuai jumlahBrg
-            const newStok = sfDoc.data().stok + item.jumlahBrg;
-            transaction.update(docRef, {stok: newStok});
-          });
-        });
-      })
-      .then(() => {
-        console.log(`stok brg berhasil ditambah`);
-        cetak();
-      })
-      .catch((error) => console.log(`transaction failed: `, error));
-  };
 
   // simpan ke doc penjualans / pengeluarans
   const cetak = () => {
@@ -92,7 +93,7 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
                 title={`${item.jumlahBrg}x ${item.namaBrg}`}
                 desc={`${item.jumlahBrg} x Rp ${item.harga},-`}
                 icon="cash-multiple"
-                right={`Rp ${parseInt(item.jumlahBrg) * item.harga},-`}
+                right={`Rp ${item.jumlahBrg * item.harga},-`}
               />
             )}
             keyExtractor={(item, i) => i.toString()}
@@ -110,7 +111,7 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
             Batal
           </Button>
 
-          <Button mode="contained" onPress={() => transaksi()}>
+          <Button mode="contained" onPress={() => setTrigger(true)}>
             Simpan
           </Button>
         </View>
