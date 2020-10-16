@@ -50,10 +50,11 @@ const Penjualan = () => {
   };
 
   // jika brg yg ad di modal diklik
-  const tambahArr = (namaBrg, stok, harga) => {
+  const tambahArr = (key, namaBrg, stok, harga) => {
     // maka brg akan msk ke state penjualans
     setPenjualans((prevPenjualan) =>
       prevPenjualan.concat({
+        key,
         namaBrg,
         stok,
         harga,

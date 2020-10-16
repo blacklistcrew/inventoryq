@@ -83,7 +83,7 @@ const Fab = ({tambahArr, title}) => {
                     icon="cube"
                     right={`Rp ${harga},-`}
                     onPress={() => {
-                      tambahArr(item.namaBrg, item.stok, harga);
+                      tambahArr(item.key, item.namaBrg, item.stok, harga);
                       hideModal();
                     }}
                   />

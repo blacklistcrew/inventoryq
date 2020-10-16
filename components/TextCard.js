@@ -25,7 +25,15 @@ const TextCard = ({
       )}
       right={() => {
         const render = right ? (
-          <Text style={{margin: 10, color: Colors.green500}}>{right}</Text>
+          <Text
+            style={{
+              margin: 10,
+              color: Colors.green500,
+              fontWeight: 'bold',
+              fontSize: 20,
+            }}>
+            {right}
+          </Text>
         ) : rightComponent ? (
           rightComponent
         ) : null;

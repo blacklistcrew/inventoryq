@@ -17,23 +17,48 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
     .map((item) => parseInt(item.jumlahBrg) * item.harga)
     .reduce(reducer);
 
-  // menentukan tbl
-  const tbl = title == 'Penjualan' ? 'penjualans' : 'pengeluarans';
+  // menentukan doc
+  const doc = title == 'Penjualan' ? 'penjualans' : 'pengeluarans';
 
-  // tombol cetak
+  // mengurangi / menambah stok brg
+  const transaksi = () => {
+    return firestore()
+      .runTransaction(function (transaction) {
+        items.map((item) => {
+          const docRef = firestore().collection(doc).doc(item.namaBrg);
+          // This code may get re-run multiple times if there are conflicts.
+          return transaction.get(docRef).then(function (sfDoc) {
+            if (!sfDoc.exists) {
+              throw `document ${item.key} does not exist`;
+            }
+
+            // menambah stok brg sesuai jumlahBrg
+            const newStok = sfDoc.data().stok + item.jumlahBrg;
+            transaction.update(docRef, {stok: newStok});
+          });
+        });
+      })
+      .then(() => {
+        console.log(`stok brg berhasil ditambah`);
+        cetak();
+      })
+      .catch((error) => console.log(`transaction failed: `, error));
+  };
+
+  // simpan ke doc penjualans / pengeluarans
   const cetak = () => {
     firestore()
-      .collection(tbl)
+      .collection(doc)
       .add({
-        items: items.map(({stok, ...other}) => other),
+        items: items.map(({stok, key, ...other}) => other),
         total,
         createdAt: new Date(),
       })
       .then(() => {
-        console.log(tbl + ' added');
+        console.log(doc + ' added');
         resetSubmit();
       })
-      .catch((err) => console.log(`add ${tbl} failed`, err));
+      .catch((err) => console.log(`add ${doc} failed`, err));
   };
 
   // reset setelah submit
@@ -85,7 +110,7 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
             Batal
           </Button>
 
-          <Button mode="contained" onPress={cetak}>
+          <Button mode="contained" onPress={() => transaksi()}>
             Simpan
           </Button>
         </View>
