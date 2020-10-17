@@ -1,8 +1,8 @@
-import React from "react";
-import { View, FlatList } from "react-native";
-import globalStyles from "../styles/globalStyles";
-import TextCard from "../components/TextCard";
-import SortBy from "../components/SortBy";
+import React from 'react';
+import {View, FlatList} from 'react-native';
+import globalStyles from '../styles/globalStyles';
+import TextCard from '../components/TextCard';
+import SortBy from '../components/SortBy';
 
 const LaporanPengeluaran = () => (
   <>
@@ -30,7 +30,7 @@ const LaporanPengeluaran = () => (
     <View style={globalStyles.whiteContainer}>
       <FlatList
         data={arrPengeluaran}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <TextCard
             title={item.namaBrg}
             desc={`Jumlah Barang: ${item.jumlahBrg}`}
@@ -45,10 +45,10 @@ const LaporanPengeluaran = () => (
 );
 
 const arrPengeluaran = [
-  { namaBrg: "Beras Rojo Lele", jumlahBrg: 20, totBayar: 50000 },
-  { namaBrg: "Minyak Goreng", jumlahBrg: 50, totBayar: 10000 },
-  { namaBrg: "Gula Pasir", jumlahBrg: 100, totBayar: 5000 },
-  { namaBrg: "Mie Instan", jumlahBrg: 80, totBayar: 2500 },
+  {namaBrg: 'Beras Rojo Lele', jumlahBrg: 20, totBayar: 50000},
+  {namaBrg: 'Minyak Goreng', jumlahBrg: 50, totBayar: 10000},
+  {namaBrg: 'Gula Pasir', jumlahBrg: 100, totBayar: 5000},
+  {namaBrg: 'Mie Instan', jumlahBrg: 80, totBayar: 2500},
 ];
 
 export default LaporanPengeluaran;
