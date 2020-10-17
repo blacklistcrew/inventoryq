@@ -4,6 +4,7 @@ import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
 import SortBy from '../components/SortBy';
 import firestore from '@react-native-firebase/firestore';
+import formatHarga from '../helpers/formatHarga';
 
 const DaftarBarang = () => {
   const [loading, setLoading] = useState(true);
@@ -72,17 +73,19 @@ const DaftarBarang = () => {
           Loading...
         </Text>
       ) : (
-        <FlatList
-          data={barangs}
-          renderItem={({item}) => (
-            <TextCard
-              title={item.namaBrg}
-              desc={`Stok: ${item.stok}`}
-              icon="cube"
-              right={`Rp ${item.hargaJual},-`}
-            />
-          )}
-        />
+        <View style={{...globalStyles.whiteContainer, flex: 1}}>
+          <FlatList
+            data={barangs}
+            renderItem={({item}) => (
+              <TextCard
+                title={item.namaBrg}
+                desc={`Stok: ${item.stok}`}
+                icon="cube"
+                right={formatHarga(item.hargaJual)}
+              />
+            )}
+          />
+        </View>
       )}
     </View>
   );

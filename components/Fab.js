@@ -4,6 +4,7 @@ import {FAB, TextInput} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
 import firestore from '@react-native-firebase/firestore';
+import formatHarga from '../helpers/formatHarga';
 
 const Fab = ({tambahArr, title}) => {
   const [loading, setLoading] = useState(true);
@@ -81,7 +82,7 @@ const Fab = ({tambahArr, title}) => {
                     title={item.namaBrg}
                     desc={`Stok: ${item.stok}`}
                     icon="cube"
-                    right={`Rp ${harga},-`}
+                    right={formatHarga(harga)}
                     onPress={() => {
                       tambahArr(item.key, item.namaBrg, item.stok, harga);
                       hideModal();

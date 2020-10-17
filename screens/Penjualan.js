@@ -155,7 +155,7 @@ const Penjualan = () => {
 
       {/* Notif */}
       <Snackbar visible={notif} onDismiss={dismissNotif}>
-        Pengeluaran telah disimpan.
+        Penjualan telah disimpan.
       </Snackbar>
     </>
   );

@@ -3,8 +3,8 @@ import {View, FlatList, Text, Modal} from 'react-native';
 import {Button} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from './TextCard';
-import firestore from '@react-native-firebase/firestore';
-import firebase from '@react-native-firebase/app';
+import {aturStok, cetak} from '../helpers/aturFirebase';
+import formatHarga from '../helpers/formatHarga';
 
 const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
   // trigger transaksi (tambah / krg stok)
@@ -14,53 +14,22 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
-  // total pengeluaran
-  const reducer = (accumulator, currentValue) => accumulator + currentValue;
-  const total = items
-    .map((item) => item.jumlahBrg * item.harga)
-    .reduce(reducer);
-
   // mengurangi / menambah stok brg
   useEffect(() => {
+    const status = title == 'Pengeluaran' ? 'ditambah' : 'dikurang';
+
     if (trigger) {
-      // tambah stok
+      // tambah stok / krg stok
       items.map((item) => {
-        firestore()
-          .collection('barangs')
-          .doc(item.key)
-          .update({
-            stok: firebase.firestore.FieldValue.increment(item.jumlahBrg),
-          })
-          .then(() => console.log(`stok ${item.namaBrg} ditambah`))
-          .catch((err) =>
-            console.log(`stok ${item.namaBrg} gagal ditambah`, err),
-          );
+        aturStok(item.key, item.namaBrg, item.jumlahBrg, status);
       });
 
       // cetak setelah tambah stok / krg stok brg selesai
       setTrigger(false);
-      cetak();
+      cetak(status, items);
+      resetSubmit();
     }
   }, [trigger]);
-
-  // menentukan doc
-  const doc = title == 'Penjualan' ? 'penjualans' : 'pengeluarans';
-
-  // simpan ke doc penjualans / pengeluarans
-  const cetak = () => {
-    firestore()
-      .collection(doc)
-      .add({
-        items: items.map(({stok, key, ...other}) => other),
-        total,
-        createdAt: new Date(),
-      })
-      .then(() => {
-        console.log(doc + ' added');
-        resetSubmit();
-      })
-      .catch((err) => console.log(`add ${doc} failed`, err));
-  };
 
   // reset setelah submit
   const resetSubmit = () => {
@@ -68,6 +37,15 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
     hideModal();
     toggleNotif();
   };
+
+  // menampilkan waktu terkini saat mau cetak brg
+  const newDate = new Date().toDateString().toString();
+
+  // total pengeluaran / penjualan
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  const total = items
+    .map((item) => item.jumlahBrg * item.harga)
+    .reduce(reducer);
 
   return (
     <>
@@ -93,16 +71,17 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
                 title={`${item.jumlahBrg}x ${item.namaBrg}`}
                 desc={`${item.jumlahBrg} x Rp ${item.harga},-`}
                 icon="cash-multiple"
-                right={`Rp ${item.jumlahBrg * item.harga},-`}
+                right={formatHarga(item.jumlahBrg * item.harga)}
               />
             )}
-            keyExtractor={(item, i) => i.toString()}
           />
         </View>
 
-        <Text style={{textAlign: 'center', fontSize: 20}}>
+        <Text style={{...styles.textCetak, color: 'grey'}}>{newDate}</Text>
+
+        <Text style={styles.textCetak}>
           <Text>Total {title} : </Text>
-          <Text style={{color: 'green'}}>Rp {total},-</Text>
+          <Text style={{color: 'green'}}>{formatHarga(total)}</Text>
         </Text>
 
         {/* tombol */}
@@ -118,6 +97,13 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
       </Modal>
     </>
   );
+};
+
+const styles = {
+  textCetak: {
+    textAlign: 'center',
+    fontSize: 20,
+  },
 };
 
 export default ModalCetak;
