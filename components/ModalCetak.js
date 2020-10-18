@@ -26,7 +26,7 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
 
       // cetak setelah tambah stok / krg stok brg selesai
       setTrigger(false);
-      cetak(status, items);
+      cetak(status, items, total);
       resetSubmit();
     }
   }, [trigger]);
@@ -44,7 +44,10 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
   // total pengeluaran / penjualan
   const reducer = (accumulator, currentValue) => accumulator + currentValue;
   const total = items
-    .map((item) => item.jumlahBrg * item.harga)
+    .map((item) => {
+      const harga = title == 'Penjualan' ? item.hargaJual : item.hargaBeli;
+      return item.jumlahBrg * harga;
+    })
     .reduce(reducer);
 
   return (
@@ -66,14 +69,19 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
         <View style={globalStyles.whiteContainer} style={{flex: 1}}>
           <FlatList
             data={items}
-            renderItem={({item}) => (
-              <TextCard
-                title={`${item.jumlahBrg}x ${item.namaBrg}`}
-                desc={`${item.jumlahBrg} x Rp ${item.harga},-`}
-                icon="cash-multiple"
-                right={formatHarga(item.jumlahBrg * item.harga)}
-              />
-            )}
+            renderItem={({item}) => {
+              const harga =
+                title == 'Penjualan' ? item.hargaJual : item.hargaBeli;
+
+              return (
+                <TextCard
+                  title={`${item.jumlahBrg}x ${item.namaBrg}`}
+                  desc={`${item.jumlahBrg} x ${formatHarga(harga)}`}
+                  icon="cash-multiple"
+                  right={formatHarga(item.jumlahBrg * harga)}
+                />
+              );
+            }}
           />
         </View>
 
@@ -81,7 +89,7 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
 
         <Text style={styles.textCetak}>
           <Text>Total {title} : </Text>
-          <Text style={{color: 'green'}}>{formatHarga(total)}</Text>
+          <Text style={{color: 'green'}}>{formatHarga(parseInt(total))}</Text>
         </Text>
 
         {/* tombol */}

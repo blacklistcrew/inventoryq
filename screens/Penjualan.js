@@ -50,14 +50,14 @@ const Penjualan = () => {
   };
 
   // jika brg yg ad di modal diklik
-  const tambahArr = (key, namaBrg, stok, harga) => {
+  const tambahArr = (key, namaBrg, stok, hargaJual) => {
     // maka brg akan msk ke state penjualans
     setPenjualans((prevPenjualan) =>
       prevPenjualan.concat({
         key,
         namaBrg,
         stok,
-        harga,
+        hargaJual,
         jumlahBrg: '',
       }),
     );
@@ -154,7 +154,13 @@ const Penjualan = () => {
       )}
 
       {/* Notif */}
-      <Snackbar visible={notif} onDismiss={dismissNotif}>
+      <Snackbar
+        visible={notif}
+        onDismiss={dismissNotif}
+        action={{
+          label: 'TUTUP',
+          onPress: dismissNotif,
+        }}>
         Penjualan telah disimpan.
       </Snackbar>
     </>

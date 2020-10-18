@@ -19,7 +19,7 @@ const Fab = ({tambahArr, title}) => {
 
   useEffect(() => {
     return ref.onSnapshot((querySnapshot) => {
-      const list = [];
+      let list = [];
       querySnapshot.forEach((doc) => {
         if (title == 'Penjualan') {
           const {namaBrg, hargaJual, stok} = doc.data();
@@ -57,8 +57,30 @@ const Fab = ({tambahArr, title}) => {
     setBarangs(data);
   };
 
+  // render brg yg akan dipilih
+  const renderBrg = ({item}) => {
+    // menentukan harga yg akan akumulasi
+    const harga = title == 'Penjualan' ? item.hargaJual : item.hargaBeli;
+
+    return (
+      <TextCard
+        title={item.namaBrg}
+        desc={`Stok: ${item.stok}`}
+        icon="cube"
+        right={formatHarga(harga)}
+        onPress={() => {
+          tambahArr(item.key, item.namaBrg, item.stok, harga);
+          hideModal();
+        }}
+      />
+    );
+  };
+
   return (
     <>
+      {/* tombol modal */}
+      <FAB style={styles.fab} icon="plus" onPress={showModal} />
+
       {/* modal */}
       <Modal animationType="slide" visible={visible} onRequestClose={hideModal}>
         <TextInput label="Cari barang" onChangeText={changeBarang} />
@@ -70,36 +92,13 @@ const Fab = ({tambahArr, title}) => {
           </Text>
         ) : (
           <View style={globalStyles.whiteContainer} style={{flex: 1}}>
-            <FlatList
-              data={barangs}
-              renderItem={({item}) => {
-                // menentukan harga yg akan akumulasi
-                const harga =
-                  title == 'Penjualan' ? item.hargaJual : item.hargaBeli;
-
-                return (
-                  <TextCard
-                    title={item.namaBrg}
-                    desc={`Stok: ${item.stok}`}
-                    icon="cube"
-                    right={formatHarga(harga)}
-                    onPress={() => {
-                      tambahArr(item.key, item.namaBrg, item.stok, harga);
-                      hideModal();
-                    }}
-                  />
-                );
-              }}
-            />
+            <FlatList data={barangs} renderItem={renderBrg} />
           </View>
         )}
 
         {/* tombol modal */}
         <FAB style={styles.fab} icon="close" onPress={hideModal} />
       </Modal>
-
-      {/* tombol modal */}
-      <FAB style={styles.fab} icon="plus" onPress={showModal} />
     </>
   );
 };

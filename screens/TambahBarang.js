@@ -108,8 +108,6 @@ const styles = StyleSheet.create({
   inputIcon: {
     padding: 15.5,
     backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgrey',
   },
   error: {
     color: 'red',
@@ -130,7 +128,7 @@ const inputs = [
   {
     label: 'Harga beli',
     name: 'hargaBeli',
-    icon: 'cash-multiple',
+    icon: 'chevron-left-circle',
   },
   {
     label: 'Harga jual',

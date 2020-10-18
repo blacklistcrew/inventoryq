@@ -18,7 +18,7 @@ export const aturStok = (key, namaBrg, jumlahBrg, status) => {
 // simpan pengeluarans / penjualans
 export const cetak = (status, items, total) => {
   // menentukan doc yg akan ditambah
-  const doc = status == 'dikurang' ? 'penjualans' : 'pengurangans';
+  const doc = status == 'dikurang' ? 'penjualans' : 'pengeluarans';
 
   firestore()
     .collection(doc)
