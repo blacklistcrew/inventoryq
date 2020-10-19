@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, FlatList, Text, TextInput} from 'react-native';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
-import SortBy from '../components/SortBy';
 import firestore from '@react-native-firebase/firestore';
 import formatHarga from '../helpers/formatHarga';
 
@@ -60,10 +59,7 @@ const DaftarBarang = () => {
         />
 
         <View style={globalStyles.flexRow}>
-          {/* waktu */}
-          <SortBy title="Waktu" />
-          {/* waktu, totbayar, jumlahbeli, namabrg */}
-          <SortBy title="Urutkan" />
+          <Text>krg sortby disini</Text>
         </View>
       </View>
 

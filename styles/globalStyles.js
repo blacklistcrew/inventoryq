@@ -1,15 +1,15 @@
-import { StyleSheet } from "react-native";
+import {StyleSheet} from 'react-native';
 
 const globalStyles = StyleSheet.create({
   whiteContainer: {
     marginVertical: 5,
     paddingVertical: 10,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   flexRow: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
 });
 

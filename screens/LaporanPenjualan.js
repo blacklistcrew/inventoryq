@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, FlatList} from 'react-native';
-import {TouchableRipple, Button} from 'react-native-paper';
+import {TouchableRipple, Button, Modal, Portal} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
-import Modal from 'react-native-modal';
 import firestore from '@react-native-firebase/firestore';
 import formatHarga from '../helpers/formatHarga';
 
@@ -40,7 +39,21 @@ const LaporanPenjualan = () => {
 
   // total
   const reducer = (accumulator, currentValue) => accumulator + currentValue;
-  const total = penjualans.map((penjualan) => penjualan.total).reduce(reducer, 0);
+  const total = penjualans
+    .map((penjualan) => penjualan.total)
+    .reduce(reducer, 0);
+
+  // render flatlist
+  const renderFlatlist = ({item}) => (
+    <TextCard
+      title={item.createdAt.toDate().toDateString().toString()}
+      desc={item.items.map((item) => {
+        return `${item.jumlahBrg} x ${item.namaBrg}\n`;
+      })}
+      icon="cash-multiple"
+      right={formatHarga(item.total)}
+    />
+  );
 
   return (
     <>
@@ -51,30 +64,27 @@ const LaporanPenjualan = () => {
             onPress={toggleModal}
             rippleColor="rgba(0, 0, 0, .32)">
             <View style={globalStyles.flexRow}>
-              <Text style={{color: '#6200ee', marginLeft: 20}}>Waktu</Text>
-              <Button icon="chevron-down" color={'#6200ee'} />
+              <Text style={styles.sortbyText}>Waktu</Text>
+              <Button icon="chevron-down" color="#6200ee" />
             </View>
           </TouchableRipple>
 
           {/* modal waktu */}
-          <Modal
-            animationIn="fadeIn"
-            animationOut="fadeOut"
-            isVisible={visible}
-            onBackButtonPress={toggleModal}
-            onBackdropPress={toggleModal}>
-            <View style={styles.smallModal}>
-              <Text>I am the modal content!</Text>
-            </View>
-          </Modal>
+          <Portal>
+            <Modal visible={visible} onDismiss={toggleModal}>
+              <View style={styles.smallModal}>
+                <Text>I am the modal content!</Text>
+              </View>
+            </Modal>
+          </Portal>
 
           {/* waktu, totbayar, jumlahbeli, namabrg */}
           <TouchableRipple
             onPress={() => console.log('Urutkan')}
             rippleColor="rgba(0, 0, 0, .32)">
             <View style={globalStyles.flexRow}>
-              <Text style={{color: '#6200ee', marginLeft: 20}}>Urutkan</Text>
-              <Button icon="chevron-down" color={'#6200ee'} />
+              <Text style={styles.sortbyText}>Urutkan</Text>
+              <Button icon="chevron-down" color="#6200ee" />
             </View>
           </TouchableRipple>
         </View>
@@ -92,24 +102,10 @@ const LaporanPenjualan = () => {
 
       {/* daftar penjualan */}
       {loading ? (
-        <Text style={{color: 'grey', textAlign: 'center', margin: 30}}>
-          Loading...
-        </Text>
+        <Text style={styles.loadingText}>Loading...</Text>
       ) : (
         <View style={globalStyles.whiteContainer}>
-          <FlatList
-            data={penjualans}
-            renderItem={({item}) => (
-              <TextCard
-                title={item.createdAt.toDate().toDateString().toString()}
-                desc={item.items.map((item) => {
-                  return `${item.jumlahBrg} x ${item.namaBrg}\n`;
-                })}
-                icon="cash-multiple"
-                right={formatHarga(item.total)}
-              />
-            )}
-          />
+          <FlatList data={penjualans} renderItem={renderFlatlist} />
         </View>
       )}
     </>
@@ -119,12 +115,19 @@ const LaporanPenjualan = () => {
 const styles = {
   smallModal: {
     backgroundColor: '#fff',
-    width: 250,
-    height: 250,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
     borderRadius: 10,
+  },
+  sortbyText: {
+    color: '#6200ee',
+    marginLeft: 20,
+  },
+  loadingText: {
+    color: 'grey',
+    textAlign: 'center',
+    margin: 30,
   },
 };
 
