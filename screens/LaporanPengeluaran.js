@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
@@ -6,18 +6,37 @@ import firestore from '@react-native-firebase/firestore';
 import formatHarga from '../helpers/formatHarga';
 import SortBy from '../components/SortBy';
 
+// useReducer spy state pengeluarans bs di-passdown & di-edit di component SortBy
+const initState = {
+  pengeluarans: [],
+  loading: true,
+};
+
+const pengeluaransReducer = (state = initState, action) => {
+  switch (action.type) {
+    case 'PUSH_ITEM':
+      return {...state, pengeluarans: action.list};
+
+    case 'SET_LOADING':
+      return {...state, loading: action.loading};
+
+    default:
+      return state;
+  }
+};
+
 const LaporanPengeluaran = () => {
   // data
-  const [loading, setLoading] = useState(true);
-  const [pengeluarans, setPengeluarans] = useState([]);
+  const [statePengeluarans, dispatchPengeluarans] = useReducer(
+    pengeluaransReducer,
+    initState,
+  );
+  // sort data
   const [sesudah, setSesudah] = useState(
     new Date(new Date().toLocaleDateString()),
   );
   // function ini utk di-passdown ke SortBy component
   const updateSesudah = (dateObj) => setSesudah(dateObj);
-  const updatePengeluarans = (pengeluaransBaru) =>
-    setPengeluarans(pengeluaransBaru);
-  const pengeluaransHolder = pengeluarans.sort((a, b) => b.total - a.total);
 
   // firestore ref
   const ref = firestore()
@@ -27,6 +46,9 @@ const LaporanPengeluaran = () => {
 
   // firestore
   useEffect(() => {
+    // setiap kali ref berubah, maka tulisan loading akan muncul
+    dispatchPengeluarans({type: 'SET_LOADING', loading: true});
+
     return ref.onSnapshot((querySnapshot) => {
       let list = [];
       querySnapshot.forEach((doc) => {
@@ -39,26 +61,35 @@ const LaporanPengeluaran = () => {
         });
       });
 
-      setPengeluarans(list);
-
-      if (loading) {
-        setLoading(false);
-      }
+      dispatchPengeluarans({type: 'PUSH_ITEM', list});
+      dispatchPengeluarans({type: 'SET_LOADING', loading: false});
     });
   }, [sesudah]);
 
   // total
   const reducer = (accumulator, currentValue) => accumulator + currentValue;
-  const total = pengeluarans
+  const total = statePengeluarans.pengeluarans
     .map((pengeluaran) => pengeluaran.total)
     .reduce(reducer, 0);
+
+  // render flatlist
+  const renderFlatlist = ({item}) => (
+    <TextCard
+      title={item.createdAt.toDate().toDateString().toString()}
+      desc={item.items.map((item) => {
+        return `${item.jumlahBrg} x ${item.namaBrg}\n`;
+      })}
+      icon="cash-multiple"
+      right={formatHarga(item.total)}
+    />
+  );
 
   return (
     <>
       <SortBy
         updateSesudah={updateSesudah}
-        pengeluarans={pengeluaransHolder}
-        updatePengeluarans={updatePengeluarans}
+        pengeluarans={statePengeluarans.pengeluarans}
+        dispatchPengeluarans={dispatchPengeluarans}
       />
 
       {/* summary pengeluaran */}
@@ -71,28 +102,21 @@ const LaporanPengeluaran = () => {
       </View>
 
       {/* daftar pengeluaran */}
-      {loading ? (
+      {statePengeluarans.loading ? (
         <Text style={styles.loadingText}>Loading...</Text>
-      ) : (
+      ) : statePengeluarans.pengeluarans.length > 0 ? (
         <View style={{...globalStyles.whiteContainer, flex: 1}}>
-          <FlatList data={pengeluarans} renderItem={renderFlatlist} />
+          <FlatList
+            data={statePengeluarans.pengeluarans}
+            renderItem={renderFlatlist}
+          />
         </View>
+      ) : (
+        <Text style={styles.loadingText}>Belum ada pengeluaran.</Text>
       )}
     </>
   );
 };
-
-// render flatlist
-const renderFlatlist = ({item}) => (
-  <TextCard
-    title={item.createdAt.toDate().toDateString().toString()}
-    desc={item.items.map((item) => {
-      return `${item.jumlahBrg} x ${item.namaBrg}\n`;
-    })}
-    icon="cash-multiple"
-    right={formatHarga(item.total)}
-  />
-);
 
 const styles = {
   loadingText: {
