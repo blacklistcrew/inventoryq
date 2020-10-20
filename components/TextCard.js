@@ -27,7 +27,8 @@ const TextCard = ({
         const render = right ? (
           <Text
             style={{
-              margin: 10,
+              alignSelf: 'center',
+              marginHorizontal: 10,
               color: Colors.green500,
               fontWeight: 'bold',
               fontSize: 20,

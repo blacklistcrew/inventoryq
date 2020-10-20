@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import {TouchableRipple, Button, Portal, Modal} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
+import intToBulan from '../helpers/intToBulan';
+import firestore from '@react-native-firebase/firestore';
 
-const SortBy = ({updateSesudah, pengeluarans, updatePengeluarans}) => {
+const SortBy = ({updateSesudah, pengeluarans, dispatchPengeluarans}) => {
   // modal
   const [visible, setVisible] = useState(false);
   const toggleModal = () => setVisible(!visible);
@@ -11,9 +13,30 @@ const SortBy = ({updateSesudah, pengeluarans, updatePengeluarans}) => {
   const [visible2, setVisible2] = useState(false);
   const toggleModal2 = () => setVisible2(!visible2);
   // judul sortby total
-  const [totalDropdown, setTotalDropdown] = useState('Urutkan');
+  const [totalDropdown, setTotalDropdown] = useState('Terbaru');
   // judul sortby waktu
   const [waktuDropdown, setWaktuDropdown] = useState('Hari Ini');
+  const [waktuList, setWaktuList] = useState([
+    'Hari Ini',
+    '7 Hari Terakhir',
+    '30 Hari Terakhir',
+  ]);
+
+  // generate sortby waktu list
+  useEffect(() => {
+    firestore()
+      .collection('sortby')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot((querySnapshot) => {
+        let list = [];
+        querySnapshot.forEach((doc) => {
+          const {tahunIni, bulanIni} = doc.data();
+          list.push(`${intToBulan(bulanIni)} ${tahunIni}`);
+        });
+
+        setWaktuList((prevWaktu) => prevWaktu.concat(list));
+      });
+  }, []);
 
   // jika salah satu dropdown waktu dipilih
   const pressWaktu = (ygDipilih) => {
@@ -43,11 +66,24 @@ const SortBy = ({updateSesudah, pengeluarans, updatePengeluarans}) => {
     // ubah urutan
     switch (ygDipilih) {
       case 'Kecil ke Besar':
-        updatePengeluarans(pengeluarans.sort((a, b) => b.total - a.total));
+        dispatchPengeluarans({
+          type: 'PUSH_ITEM',
+          list: pengeluarans.sort((a, b) => b.total - a.total),
+        });
+        break;
+
+      case 'Besar ke Kecil':
+        dispatchPengeluarans({
+          type: 'PUSH_ITEM',
+          list: pengeluarans.sort((a, b) => a.total - b.total),
+        });
         break;
 
       default:
-        updatePengeluarans(pengeluarans.sort((a, b) => a.total - b.total));
+        dispatchPengeluarans({
+          type: 'PUSH_ITEM',
+          list: pengeluarans.sort((a, b) => a.createdAt - b.createdAt),
+        });
         break;
     }
 
@@ -72,26 +108,15 @@ const SortBy = ({updateSesudah, pengeluarans, updatePengeluarans}) => {
         <Portal>
           <Modal visible={visible} onDismiss={toggleModal}>
             <View style={styles.smallModal}>
-              <TouchableRipple
-                onPress={() => pressWaktu('Hari Ini')}
-                rippleColor="rgba(0, 0, 0, .32)"
-                style={styles.sortbyItem}>
-                <Text>Hari Ini</Text>
-              </TouchableRipple>
-
-              <TouchableRipple
-                onPress={() => pressWaktu('7 Hari Terakhir')}
-                rippleColor="rgba(0, 0, 0, .32)"
-                style={styles.sortbyItem}>
-                <Text>7 Hari Terakhir</Text>
-              </TouchableRipple>
-
-              <TouchableRipple
-                onPress={() => pressWaktu('30 Hari Terakhir')}
-                rippleColor="rgba(0, 0, 0, .32)"
-                style={styles.sortbyItem}>
-                <Text>30 Hari Terakhir</Text>
-              </TouchableRipple>
+              {waktuList.map((item, i) => (
+                <TouchableRipple
+                  onPress={() => pressWaktu(item)}
+                  rippleColor="rgba(0, 0, 0, .32)"
+                  style={styles.sortbyItem}
+                  key={i.toString()}>
+                  <Text>{item}</Text>
+                </TouchableRipple>
+              ))}
             </View>
           </Modal>
         </Portal>
@@ -109,19 +134,15 @@ const SortBy = ({updateSesudah, pengeluarans, updatePengeluarans}) => {
         <Portal>
           <Modal visible={visible2} onDismiss={toggleModal2}>
             <View style={styles.smallModal}>
-              <TouchableRipple
-                onPress={() => pressTotal('Kecil ke Besar')}
-                rippleColor="rgba(0, 0, 0, .32)"
-                style={styles.sortbyItem}>
-                <Text>Kecil ke Besar</Text>
-              </TouchableRipple>
-
-              <TouchableRipple
-                onPress={() => pressTotal('Besar ke Kecil')}
-                rippleColor="rgba(0, 0, 0, .32)"
-                style={styles.sortbyItem}>
-                <Text>Besar ke Kecil</Text>
-              </TouchableRipple>
+              {totalList.map((item, i) => (
+                <TouchableRipple
+                  onPress={() => pressTotal(item)}
+                  rippleColor="rgba(0, 0, 0, .32)"
+                  style={styles.sortbyItem}
+                  key={i.toString()}>
+                  <Text>{item}</Text>
+                </TouchableRipple>
+              ))}
             </View>
           </Modal>
         </Portal>
@@ -154,5 +175,7 @@ const date = new Date();
 const hariIni = date.getDate();
 const bulanIni = date.getMonth();
 const tahunIni = date.getFullYear();
+
+const totalList = ['Terbaru', 'Kecil ke Besar', 'Besar ke Kecil'];
 
 export default SortBy;
