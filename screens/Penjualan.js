@@ -193,7 +193,7 @@ const styles = {
     right: 30,
     bottom: 30,
     color: '#fff',
-    backgroundColor: 'red',
+    backgroundColor: Colors.red500,
   },
   loadingText: {
     color: 'grey',

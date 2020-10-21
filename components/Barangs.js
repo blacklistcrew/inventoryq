@@ -1,11 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {View, FlatList, Text, TextInput} from 'react-native';
 import globalStyles from '../styles/globalStyles';
-import TextCard from '../components/TextCard';
 import firestore from '@react-native-firebase/firestore';
-import formatHarga from '../helpers/formatHarga';
 
-const Barangs = ({onPress}) => {
+const Barangs = ({renderFlatlist, title}) => {
   const [loading, setLoading] = useState(true);
   const [barangs, setBarangs] = useState([]);
   const [cari, setCari] = useState([]);
@@ -17,20 +15,20 @@ const Barangs = ({onPress}) => {
     return ref.onSnapshot((querySnapshot) => {
       let list = [];
       querySnapshot.forEach((doc) => {
-        if (route.params?.title == 'Penjualan') {
-          const {namaBrg, hargaJual, stok} = doc.data();
-          list.push({
-            key: doc.id,
-            namaBrg,
-            hargaJual,
-            stok,
-          });
-        } else {
+        if (title == 'Pengeluaran') {
           const {namaBrg, hargaBeli, stok} = doc.data();
           list.push({
             key: doc.id,
             namaBrg,
             hargaBeli,
+            stok,
+          });
+        } else {
+          const {namaBrg, hargaJual, stok} = doc.data();
+          list.push({
+            key: doc.id,
+            namaBrg,
+            hargaJual,
             stok,
           });
         }
@@ -53,23 +51,6 @@ const Barangs = ({onPress}) => {
     setBarangs(data);
   };
 
-  // render brg yg akan dipilih
-  const RenderBrg = ({item}) => {
-    // menentukan harga yg akan akumulasi
-    const harga =
-      route.params?.title == 'Penjualan' ? item.hargaJual : item.hargaBeli;
-
-    return (
-      <TextCard
-        title={item.namaBrg}
-        desc={`Stok: ${item.stok}`}
-        icon="cube"
-        right={formatHarga(harga)}
-        onPress={onPress}
-      />
-    );
-  };
-
   return (
     <>
       <TextInput
@@ -83,7 +64,7 @@ const Barangs = ({onPress}) => {
         <Text style={styles.loadingText}>Loading...</Text>
       ) : (
         <View style={globalStyles.whiteContainer} style={{flex: 1}}>
-          <FlatList data={barangs} renderItem={RenderBrg} />
+          <FlatList data={barangs} renderItem={renderFlatlist} />
         </View>
       )}
     </>
