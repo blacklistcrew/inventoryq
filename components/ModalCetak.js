@@ -9,6 +9,7 @@ import formatHarga from '../helpers/formatHarga';
 const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
   // trigger transaksi (tambah / krg stok)
   const [trigger, setTrigger] = useState(false);
+  const triggerOn = () => setTrigger(true);
   // modal
   const [visible, setVisible] = useState(false);
   const showModal = () => setVisible(true);
@@ -56,9 +57,7 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
       {/* modal */}
       <Modal animationType="slide" visible={visible} onRequestClose={hideModal}>
         {/* judul */}
-        <Text style={{fontSize: 20, textAlign: 'center', marginTop: 20}}>
-          Cetak {title}
-        </Text>
+        <Text style={styles.cetakTitle}>Cetak {title}</Text>
 
         {/* daftar barang */}
         <View style={globalStyles.whiteContainer} style={{flex: 1}}>
@@ -93,7 +92,7 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
             Batal
           </Button>
 
-          <Button mode="contained" onPress={() => setTrigger(true)}>
+          <Button mode="contained" onPress={triggerOn}>
             Simpan
           </Button>
         </View>
@@ -106,6 +105,11 @@ const styles = {
   textCetak: {
     textAlign: 'center',
     fontSize: 20,
+  },
+  cetakTitle: {
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 20,
   },
 };
 

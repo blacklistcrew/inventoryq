@@ -1,7 +1,7 @@
-import React from "react";
-import { TextInput, StyleSheet } from "react-native";
+import React from 'react';
+import {TextInput} from 'react-native';
 
-const InputKotak = ({ onChangeText, onBlur, value }) => (
+const InputKotak = ({onChangeText, onBlur, value}) => (
   <TextInput
     style={styles.textInput}
     placeholder="Jumlah"
@@ -13,15 +13,15 @@ const InputKotak = ({ onChangeText, onBlur, value }) => (
   />
 );
 
-const styles = StyleSheet.create({
+const styles = {
   textInput: {
     height: 40,
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: 'grey',
     margin: 15,
     fontSize: 12,
     paddingHorizontal: 5,
   },
-});
+};
 
 export default InputKotak;

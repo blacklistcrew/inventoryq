@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {IconButton, Colors} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
@@ -57,7 +57,7 @@ const Home = ({navigation}) => (
   </ScrollView>
 );
 
-const styles = StyleSheet.create({
+const styles = {
   menuContainer: {
     paddingHorizontal: 20,
     flexDirection: 'row',
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   menuItemContainer: {
     alignItems: 'center',
   },
-});
+};
 
 const menuAtas = [
   {

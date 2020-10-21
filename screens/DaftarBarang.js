@@ -42,8 +42,8 @@ const DaftarBarang = () => {
     setBarangs(data);
   };
 
-  // onblur handler
-  const onblurHandler = () => setBarangs(cari);
+  // onblur handler utk textbox cari
+  const onblurCari = () => setBarangs(cari);
 
   return (
     <View style={{flex: 1}}>
@@ -52,13 +52,8 @@ const DaftarBarang = () => {
         <TextInput
           placeholder="Cari barang"
           onChangeText={changeBarang}
-          onBlur={onblurHandler}
-          style={{
-            borderWidth: 1,
-            borderColor: 'lightgrey',
-            margin: 10,
-            paddingHorizontal: 20,
-          }}
+          onBlur={onblurCari}
+          style={styles.textboxCari}
         />
 
         <View style={globalStyles.flexRow}>
@@ -68,9 +63,7 @@ const DaftarBarang = () => {
 
       {/* daftar barang */}
       {loading ? (
-        <Text style={{color: 'grey', textAlign: 'center', margin: 30}}>
-          Loading...
-        </Text>
+        <Text style={styles.loadingText}>Loading...</Text>
       ) : (
         <View style={{...globalStyles.whiteContainer, flex: 1}}>
           <FlatList
@@ -88,6 +81,20 @@ const DaftarBarang = () => {
       )}
     </View>
   );
+};
+
+const styles = {
+  loadingText: {
+    color: 'grey',
+    textAlign: 'center',
+    margin: 30,
+  },
+  textboxCari: {
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    margin: 10,
+    paddingHorizontal: 20,
+  },
 };
 
 export default DaftarBarang;

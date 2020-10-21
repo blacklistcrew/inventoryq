@@ -1,6 +1,4 @@
-import {StyleSheet} from 'react-native';
-
-const globalStyles = StyleSheet.create({
+const globalStyles = {
   whiteContainer: {
     marginVertical: 5,
     paddingVertical: 10,
@@ -11,6 +9,6 @@ const globalStyles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-});
+};
 
 export default globalStyles;

@@ -73,7 +73,7 @@ const LaporanPengeluaran = () => {
     .reduce(reducer, 0);
 
   // render flatlist
-  const renderFlatlist = ({item}) => (
+  const RenderFlatlist = ({item}) => (
     <TextCard
       title={item.createdAt.toDate().toDateString().toString()}
       desc={item.items.map((item) => {
@@ -108,7 +108,7 @@ const LaporanPengeluaran = () => {
         <View style={{...globalStyles.whiteContainer, flex: 1}}>
           <FlatList
             data={statePengeluarans.pengeluarans}
-            renderItem={renderFlatlist}
+            renderItem={RenderFlatlist}
           />
         </View>
       ) : (

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ScrollView, StyleSheet, Text} from 'react-native';
+import {View, ScrollView, Text} from 'react-native';
 import {Button, TextInput, Snackbar} from 'react-native-paper';
 import {useForm, Controller} from 'react-hook-form';
 import globalStyles from '../styles/globalStyles';
@@ -30,6 +30,9 @@ const TambahBarang = ({navigation}) => {
       })
       .catch((err) => console.log('add barang failed', err));
   };
+
+  // tombol snackbar utk pindah ke Daftar Barang
+  const snackbarAction = () => navigation.navigate('Daftar Barang');
 
   return (
     <ScrollView>
@@ -91,7 +94,7 @@ const TambahBarang = ({navigation}) => {
         onDismiss={dismissNotif}
         action={{
           label: 'Daftar Barang',
-          onPress: () => navigation.navigate('Daftar Barang'),
+          onPress: snackbarAction,
         }}>
         Barang telah disimpan.
       </Snackbar>
@@ -100,7 +103,7 @@ const TambahBarang = ({navigation}) => {
 };
 
 // style
-const styles = StyleSheet.create({
+const styles = {
   inputStyle: {
     backgroundColor: '#fff',
     flex: 1,
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
     color: 'red',
     marginLeft: 20,
   },
-});
+};
 
 // input field
 const inputs = [

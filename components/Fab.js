@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, FlatList, Modal, Text} from 'react-native';
+import {View, FlatList, Modal, Text} from 'react-native';
 import {FAB, TextInput} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
@@ -103,7 +103,7 @@ const Fab = ({tambahArr, title}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   fab: {
     position: 'absolute',
     right: 30,
@@ -111,6 +111,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     backgroundColor: '#6200ee',
   },
-});
+};
 
 export default Fab;

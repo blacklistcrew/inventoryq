@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, ScrollView, Text, StyleSheet} from 'react-native';
+import {View, ScrollView, Text} from 'react-native';
 import {FAB, Snackbar} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
@@ -132,9 +132,7 @@ const Pengeluaran = () => {
 
         {/* tombol simpan & modal cetak */}
         {pengeluarans.length == 0 ? (
-          <Text style={{color: 'grey', textAlign: 'center', marginTop: 30}}>
-            Belum ada barang yang dipilih.
-          </Text>
+          <Text style={styles.loadingText}>Belum ada barang yang dipilih.</Text>
         ) : (
           <ModalCetak
             items={pengeluarans}
@@ -169,7 +167,7 @@ const Pengeluaran = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   fab: {
     position: 'absolute',
     right: 30,
@@ -177,6 +175,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     backgroundColor: 'red',
   },
-});
+  loadingText: {
+    color: 'grey',
+    textAlign: 'center',
+    marginTop: 30,
+  },
+};
 
 export default Pengeluaran;

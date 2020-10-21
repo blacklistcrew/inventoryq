@@ -25,16 +25,7 @@ const TextCard = ({
       )}
       right={() => {
         const render = right ? (
-          <Text
-            style={{
-              alignSelf: 'center',
-              marginHorizontal: 10,
-              color: Colors.green500,
-              fontWeight: 'bold',
-              fontSize: 20,
-            }}>
-            {right}
-          </Text>
+          <Text style={style.textHarga}>{right}</Text>
         ) : rightComponent ? (
           rightComponent
         ) : null;
@@ -43,5 +34,15 @@ const TextCard = ({
     />
   </TouchableRipple>
 );
+
+const style = {
+  textHarga: {
+    alignSelf: 'center',
+    marginHorizontal: 10,
+    color: Colors.green500,
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+};
 
 export default TextCard;

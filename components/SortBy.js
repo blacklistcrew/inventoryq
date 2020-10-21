@@ -99,55 +99,22 @@ const SortBy = ({updateSesudah, pengeluarans, dispatchPengeluarans}) => {
     <View style={globalStyles.whiteContainer}>
       <View style={globalStyles.flexRow}>
         {/* waktu */}
-        <TouchableRipple onPress={toggleModal} rippleColor="rgba(0, 0, 0, .32)">
-          <View style={globalStyles.flexRow}>
-            <Text style={styles.sortbyText}>{waktuDropdown}</Text>
-            <Button icon="chevron-down" color="#6200ee" />
-          </View>
-        </TouchableRipple>
-
-        {/* modal waktu */}
-        <Portal>
-          <Modal visible={visible} onDismiss={toggleModal}>
-            <View style={styles.smallModal}>
-              {waktuList.map((item, i) => (
-                <TouchableRipple
-                  onPress={() => pressWaktu(item)}
-                  rippleColor="rgba(0, 0, 0, .32)"
-                  style={styles.sortbyItem}
-                  key={i.toString()}>
-                  <Text>{item}</Text>
-                </TouchableRipple>
-              ))}
-            </View>
-          </Modal>
-        </Portal>
+        <RenderSortby
+          pressDismiss={toggleModal}
+          buttonTitle={waktuDropdown}
+          itemList={waktuList}
+          visible={visible}
+          pressItem={pressWaktu}
+        />
 
         {/* waktu, totbayar, jumlahbeli, namabrg */}
-        <TouchableRipple
-          onPress={toggleModal2}
-          rippleColor="rgba(0, 0, 0, .32)">
-          <View style={globalStyles.flexRow}>
-            <Text style={styles.sortbyText}>{totalDropdown}</Text>
-            <Button icon="chevron-down" color="#6200ee" />
-          </View>
-        </TouchableRipple>
-
-        <Portal>
-          <Modal visible={visible2} onDismiss={toggleModal2}>
-            <View style={styles.smallModal}>
-              {totalList.map((item, i) => (
-                <TouchableRipple
-                  onPress={() => pressTotal(item)}
-                  rippleColor="rgba(0, 0, 0, .32)"
-                  style={styles.sortbyItem}
-                  key={i.toString()}>
-                  <Text>{item}</Text>
-                </TouchableRipple>
-              ))}
-            </View>
-          </Modal>
-        </Portal>
+        <RenderSortby
+          pressDismiss={toggleModal2}
+          buttonTitle={totalDropdown}
+          itemList={totalList}
+          visible={visible2}
+          pressItem={pressTotal}
+        />
       </View>
     </View>
   );
@@ -179,5 +146,40 @@ const bulanIni = date.getMonth();
 const tahunIni = date.getFullYear();
 
 const totalList = ['Terbaru', 'Kecil ke Besar', 'Besar ke Kecil'];
+
+const RenderSortby = ({
+  pressDismiss,
+  buttonTitle,
+  itemList,
+  visible,
+  pressItem,
+}) => (
+  <>
+    {/* button */}
+    <TouchableRipple onPress={pressDismiss} rippleColor="rgba(0, 0, 0, .32)">
+      <View style={globalStyles.flexRow}>
+        <Text style={styles.sortbyText}>{buttonTitle}</Text>
+        <Button icon="chevron-down" color="#6200ee" />
+      </View>
+    </TouchableRipple>
+
+    {/* item list */}
+    <Portal>
+      <Modal visible={visible} onDismiss={pressDismiss}>
+        <View style={styles.smallModal}>
+          {itemList.map((item, i) => (
+            <TouchableRipple
+              onPress={() => pressItem(item)}
+              rippleColor="rgba(0, 0, 0, .32)"
+              style={styles.sortbyItem}
+              key={i.toString()}>
+              <Text>{item}</Text>
+            </TouchableRipple>
+          ))}
+        </View>
+      </Modal>
+    </Portal>
+  </>
+);
 
 export default SortBy;
