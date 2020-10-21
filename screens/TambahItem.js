@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, FlatList, Text} from 'react-native';
-import {TextInput} from 'react-native-paper';
+import {View, FlatList, Text, TextInput} from 'react-native';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
 import firestore from '@react-native-firebase/firestore';
@@ -59,6 +58,7 @@ const TambahItem = ({route, navigation}) => {
     // menentukan harga yg akan akumulasi
     const harga =
       route.params?.title == 'Penjualan' ? item.hargaJual : item.hargaBeli;
+
     return (
       <TextCard
         title={item.namaBrg}
@@ -80,11 +80,13 @@ const TambahItem = ({route, navigation}) => {
     );
   };
 
-  console.log(route.params);
-
   return (
     <>
-      <TextInput label="Cari barang" onChangeText={changeBarang} />
+      <TextInput
+        placeholder="Cari barang"
+        style={styles.textboxCari}
+        onChangeText={changeBarang}
+      />
 
       {/* daftar barang */}
       {loading ? (
@@ -110,6 +112,12 @@ const styles = {
     color: 'grey',
     textAlign: 'center',
     margin: 30,
+  },
+  textboxCari: {
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    margin: 10,
+    paddingHorizontal: 20,
   },
 };
 

@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {View, ScrollView, Text} from 'react-native';
-import {FAB, Snackbar} from 'react-native-paper';
+import {FAB, Snackbar, Colors} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
 import InputKotak from '../components/InputKotak';
-import Fab from '../components/Fab';
 import ModalCetak from '../components/ModalCetak';
 import {useForm, Controller} from 'react-hook-form';
 
@@ -81,6 +80,16 @@ const Penjualan = ({navigation, route}) => {
   // reset penjualans
   const resetPenjualan = () => setPenjualans([]);
 
+  // pindah ke screen TambahItem
+  const tambahItem = () =>
+    navigation.navigate('Tambah Item', {
+      screen: 'Tambah Item',
+      params: {title: 'Penjualan'},
+    });
+
+  // pindah ke screen Laporan Penjualan
+  const laporan = () => navigation.navigate('Laporan Penjualan');
+
   return (
     <>
       <ScrollView>
@@ -144,6 +153,13 @@ const Penjualan = ({navigation, route}) => {
         )}
       </ScrollView>
 
+      {/* pindah ke screen Laporan Penjualan */}
+      <FAB
+        style={{...styles.fab, bottom: 100, backgroundColor: Colors.blue500}}
+        icon="newspaper"
+        onPress={laporan}
+      />
+
       {/* jika brg ad yg dipilih */}
       {pilih.length > 0 ? (
         // tombol hapus
@@ -151,16 +167,10 @@ const Penjualan = ({navigation, route}) => {
       ) : (
         // tombol apung & modal pencarian brg
         <FAB
-          style={styles.fab}
-          icon="delete"
-          onPress={() =>
-            navigation.navigate('Tambah Item', {
-              screen: 'Tambah Item',
-              params: {title: 'Penjualan'},
-            })
-          }
+          style={{...styles.fab, backgroundColor: '#6200ee'}}
+          icon="plus"
+          onPress={tambahItem}
         />
-        // <Fab tambahArr={tambahArr} title="Penjualan" />
       )}
 
       {/* Notif */}

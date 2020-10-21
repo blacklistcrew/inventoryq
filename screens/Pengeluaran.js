@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, ScrollView, Text} from 'react-native';
-import {FAB, Snackbar} from 'react-native-paper';
+import {FAB, Snackbar, Colors} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from '../components/TextCard';
 import InputKotak from '../components/InputKotak';
@@ -8,7 +8,7 @@ import Fab from '../components/Fab';
 import ModalCetak from '../components/ModalCetak';
 import {useForm, Controller} from 'react-hook-form';
 
-const Pengeluaran = () => {
+const Pengeluaran = ({navigation}) => {
   // react-hook-form
   const {control, handleSubmit, errors} = useForm();
   // data pengeluaran yg ditambahkan lewat modal
@@ -79,6 +79,9 @@ const Pengeluaran = () => {
   // reset pengeluarans
   const resetPengeluaran = () => setPengeluarans([]);
 
+  // pindah ke screen Laporan Pengeluaran
+  const laporan = () => navigation.navigate('Laporan Pengeluaran');
+
   return (
     <>
       <ScrollView>
@@ -143,6 +146,13 @@ const Pengeluaran = () => {
           />
         )}
       </ScrollView>
+
+      {/* pindah ke screen Laporan Penjualan */}
+      <FAB
+        style={{...styles.fab, bottom: 100, backgroundColor: Colors.purple500}}
+        icon="newspaper"
+        onPress={laporan}
+      />
 
       {/* jika brg ad yg dipilih */}
       {pilih.length > 0 ? (
