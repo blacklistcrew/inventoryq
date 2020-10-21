@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, ScrollView, Text} from 'react-native';
 import {FAB, Snackbar} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
@@ -8,7 +8,7 @@ import Fab from '../components/Fab';
 import ModalCetak from '../components/ModalCetak';
 import {useForm, Controller} from 'react-hook-form';
 
-const Penjualan = () => {
+const Penjualan = ({navigation, route}) => {
   // react-hook-form
   const {control, handleSubmit, errors} = useForm();
   // data penjualan yg ditambahkan lewat modal
@@ -50,18 +50,20 @@ const Penjualan = () => {
   };
 
   // jika brg yg ad di modal diklik
-  const tambahArr = (key, namaBrg, stok, hargaJual) => {
+  useEffect(() => {
     // maka brg akan msk ke state penjualans
-    setPenjualans((prevPenjualan) =>
-      prevPenjualan.concat({
-        key,
-        namaBrg,
-        stok,
-        hargaJual,
-        jumlahBrg: '',
-      }),
-    );
-  };
+    if (route.params) {
+      setPenjualans((prevPenjualan) =>
+        prevPenjualan.concat({
+          key: route.params?.brgKey,
+          namaBrg: route.params?.namaBrg,
+          stok: route.params?.stok,
+          hargaJual: route.params?.harga,
+          jumlahBrg: '',
+        }),
+      );
+    }
+  }, [route.params]);
 
   // update jumlahBrg
   const updateJumlah = (text, item) => {
@@ -148,7 +150,17 @@ const Penjualan = () => {
         <FAB style={styles.fab} icon="delete" onPress={hapusPilih} />
       ) : (
         // tombol apung & modal pencarian brg
-        <Fab tambahArr={tambahArr} title="Penjualan" />
+        <FAB
+          style={styles.fab}
+          icon="delete"
+          onPress={() =>
+            navigation.navigate('Tambah Item', {
+              screen: 'Tambah Item',
+              params: {title: 'Penjualan'},
+            })
+          }
+        />
+        // <Fab tambahArr={tambahArr} title="Penjualan" />
       )}
 
       {/* Notif */}

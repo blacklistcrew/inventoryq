@@ -22,6 +22,7 @@ const Drawers = () => (
       name="Laporan Penjualan"
       component={Stacks.LaporanPenjualanStack}
     />
+    <Drawer.Screen name="Tambah Item" component={Stacks.TambahItemStack} />
   </Drawer.Navigator>
 );
 

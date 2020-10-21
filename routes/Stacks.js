@@ -8,6 +8,7 @@ import Penjualan from '../screens/Penjualan';
 import TambahBarang from '../screens/TambahBarang';
 import LaporanPengeluaran from '../screens/LaporanPengeluaran';
 import LaporanPenjualan from '../screens/LaporanPenjualan';
+import TambahItem from '../screens/TambahItem';
 
 const Stack = createStackNavigator();
 
@@ -53,6 +54,12 @@ const LaporanPenjualanStack = () => (
   </Stack.Navigator>
 );
 
+const TambahItemStack = () => (
+  <Stack.Navigator headerMode="screen" screenOptions={screenOptions}>
+    <Stack.Screen name="Tambah Item" component={TambahItem} />
+  </Stack.Navigator>
+);
+
 // passdown the navigation prop for styling & add the hamburger menu
 const screenOptions = ({navigation}) => {
   return {
@@ -79,4 +86,5 @@ export {
   TambahBarangStack,
   LaporanPengeluaranStack,
   LaporanPenjualanStack,
+  TambahItemStack,
 };
