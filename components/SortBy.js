@@ -68,21 +68,23 @@ const SortBy = ({updateSesudah, pengeluarans, dispatchPengeluarans}) => {
       case 'Kecil ke Besar':
         dispatchPengeluarans({
           type: 'PUSH_ITEM',
-          list: pengeluarans.sort((a, b) => b.total - a.total),
+          list: pengeluarans.sort((a, b) => a.total - b.total),
         });
         break;
 
       case 'Besar ke Kecil':
         dispatchPengeluarans({
           type: 'PUSH_ITEM',
-          list: pengeluarans.sort((a, b) => a.total - b.total),
+          list: pengeluarans.sort((a, b) => b.total - a.total),
         });
         break;
 
       default:
         dispatchPengeluarans({
           type: 'PUSH_ITEM',
-          list: pengeluarans.sort((a, b) => a.createdAt - b.createdAt),
+          list: pengeluarans.sort(
+            (a, b) => b.createdAt.toDate() - a.createdAt.toDate(),
+          ),
         });
         break;
     }

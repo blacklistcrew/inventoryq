@@ -3,7 +3,7 @@ import {View, FlatList, Text, Modal} from 'react-native';
 import {Button} from 'react-native-paper';
 import globalStyles from '../styles/globalStyles';
 import TextCard from './TextCard';
-import {aturStok, cetak, cekSortby} from '../helpers/aturFirebase';
+import {aturStok, cekSortby} from '../helpers/aturFirebase';
 import formatHarga from '../helpers/formatHarga';
 
 const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
@@ -19,17 +19,10 @@ const ModalCetak = ({items, resetItems, handleSubmit, title, toggleNotif}) => {
     const status = title == 'Pengeluaran' ? 'ditambah' : 'dikurang';
 
     if (trigger) {
-      // tambah stok / krg stok
-      aturStok(items, status);
-
+      aturStok(items, status, total); // tambah stok / krg stok
       setTrigger(false); // kembalikan nilai trigger useEffect
-      cetak(status, items, total); // cetak pengeluarans / penjualans setelah tambah stok / krg stok brg selesai
-
-      // jika sortby blm ad, tambahkan
-      cekSortby();
-
-      // reset state pengeluarans di Pengeluaran.js, sembunyikan modal, munculkan notif
-      resetSubmit();
+      cekSortby(); // jika sortby blm ad, tambahkan
+      resetSubmit(); // reset state pengeluarans di Pengeluaran.js, sembunyikan modal, munculkan notif
     }
   }, [trigger]);
 

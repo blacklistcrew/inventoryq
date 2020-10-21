@@ -42,6 +42,9 @@ const DaftarBarang = () => {
     setBarangs(data);
   };
 
+  // onblur handler
+  const onblurHandler = () => setBarangs(cari);
+
   return (
     <View style={{flex: 1}}>
       {/* urutkan berdasarkan */}
@@ -49,7 +52,7 @@ const DaftarBarang = () => {
         <TextInput
           placeholder="Cari barang"
           onChangeText={changeBarang}
-          onBlur={() => setBarangs(cari)}
+          onBlur={onblurHandler}
           style={{
             borderWidth: 1,
             borderColor: 'lightgrey',
